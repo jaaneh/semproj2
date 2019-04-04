@@ -40,7 +40,7 @@
 
 .character-card--body__button {
   background-color: #252525;
-  border-color: #444;
+  border-color: #444444;
   padding: 5px 0;
   display: block;
   border-radius: 0;
@@ -51,15 +51,15 @@
 }
 
 .character-card--body__button:hover {
-  background-color: #444;
-  border-color: #444;
+  background-color: #333333;
+  border-color: #444444;
   -webkit-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
           box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
 .character-card--body__button:active {
-  background-color: #444 !important;
-  border-color: #444 !important;
+  background-color: #333333 !important;
+  border-color: #444444 !important;
 }
 
 .character-card--body__button:active:focus {
@@ -75,5 +75,13 @@
 .character-card--body__button:focus:active {
   -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3);
           box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3);
+}
+
+.char-selected {
+  opacity: .65;
+}
+
+.hide {
+  display: none;
 }
 /*# sourceMappingURL=style.css.map */

@@ -28,11 +28,14 @@ for (let i = 0; i < characters.length; i++) {
 		.catch((err) => console.error(err));
 }
 
-// disableButton = (btn) => {
-// 	let thisBtn = document.getElementById(btn.id);
-// 	thisBtn.addClass = 'disabled';
-// 	thisBtn.style.ariaDisabled = 'true';
-// };
+setTimeout(() => {
+	for (let i = 0; i < characters.length; i++) {
+		const btn = document.querySelector(`[data-charid="${characters[i]}"]`);
+		btn.addEventListener('click', () => {
+			btn.classList.toggle('char-selected');
+		});
+	}
+}, 100);
 
 // Load How to Play modal content from local JSON file.
 const htp = document.getElementById('htp');

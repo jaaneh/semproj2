@@ -1,2 +1,9 @@
 @import "partials/navbar";
 @import "partials/character";
+
+.char-selected {
+	opacity: .65;
+}
+.hide {
+	display: none;
+}
