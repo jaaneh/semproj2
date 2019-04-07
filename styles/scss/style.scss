@@ -1,9 +1,24 @@
-@import "partials/navbar";
-@import "partials/character";
+@import 'partials/navbar';
+@import 'partials/character';
+@import 'partials/game';
 
+body {
+	margin: 0;
+}
+.row {
+	margin-right: 0 !important;
+	margin-left: 0 !important;
+}
 .char-selected {
-	opacity: .65;
+	opacity: 0.7;
 }
 .hide {
 	display: none;
+}
+canvas {
+	padding-left: 0;
+	padding-right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
 }
