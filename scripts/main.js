@@ -1,21 +1,17 @@
 const charPick = document.getElementById('charPick');
 const API_URL = 'https://anapioficeandfire.com/api/characters/';
-const characters = ['583', '271', '529', '238', '1052', '148', '1022', '1560', '957', '565'];
-
-// function rollDice() {
-// 	const dice = Math.floor(Math.random() * 6) + 1;
-// 	return dice;
-// }
+const characters = [ '583', '271', '529', '238', '1052', '148', '1022', '1560', '957', '565' ];
 
 let fetchedCharacters = [];
 let key;
 let charName;
 let firstName;
+let player = 0;
 
 for (let i = 0; i < characters.length; i++) {
 	fetch(API_URL + characters[i])
-		.then(res => res.json())
-		.then(json => {
+		.then((res) => res.json())
+		.then((json) => {
 			fetchedCharacters.push(json);
 			key = json.url.split('/')[5];
 			charName = json.name;
@@ -27,17 +23,22 @@ for (let i = 0; i < characters.length; i++) {
           <div class="card-header character-card--header">${charName}</div>
           <img src="https://via.placeholder.com/378x217" class="card-img-top character-card--image" alt="...">
           <div class="card-body character-card--body">
-            <button type="button" class="btn character-card--body__read-button" id="readMoreBtn">Read More</button>
+            <button type="button" class="btn character-card--body__read-button" data-readBtn="read-${key}">Read More</button>
+            <div class="card-body character-card--body__more hide" style="padding:0.75rem" data-info="${key}">
+							<div class="card-text">
+								Name: ${charName}<br/>
+								Gender: ${json.gender}<br/>
+								Born: ${json.born}<br/>
+              </div>
+            </div>
             <button type="button" class="btn character-card--body__choose-button" id="pickBtn" data-charname="${charName}" data-charid="${key}">Choose ${firstName}</button>
           </div>
         </div>
       </div>
       `;
 		})
-		.catch(err => console.error(err));
+		.catch((err) => console.error(err));
 }
-
-let player = 0;
 
 function getDevice() {
 	const isMobile = new RegExp('Android|webOS|iPhone|iPad|BlackBerry|Windows Phone|Opera Mini|IEMobile|Mobile', 'i');
@@ -81,15 +82,10 @@ setTimeout(() => {
 				sessionStorage.setItem(`Player${player}_Name`, `${fetchedCharacters[i].name}`);
 			}
 		});
+		const readMore = document.querySelector(`[data-readBtn="read-${characters[i]}"]`);
+		readMore.addEventListener(getDevice(), () => {
+			const readMoreChar = document.querySelector(`[data-info="${characters[i]}"]`);
+			readMoreChar.classList.toggle('hide');
+		});
 	}
 }, 150);
-
-// Load How to Play modal content from local JSON file.
-const htp = document.getElementById('htp');
-
-fetch('../howtoplay.json')
-	.then(res => res.json())
-	.then(json => {
-		htp.innerHTML = json.content;
-	})
-	.catch(err => console.error(err));

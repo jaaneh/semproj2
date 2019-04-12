@@ -9,12 +9,16 @@
   cursor: pointer;
 }
 
+.char-selected {
+  opacity: 0.7;
+}
+
 .character {
   padding: 0;
 }
 
 .character-card {
-  margin: 15px 0 !important;
+  margin: 15px 5px !important;
   -webkit-transition: 0.5s ease;
   transition: 0.5s ease;
 }
@@ -32,8 +36,8 @@
 }
 
 .character-card:hover {
-  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 2px 8px 0 rgba(0, 0, 0, 0.08);
-          box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+  -webkit-box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.12), 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+          box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.12), 0 2px 8px 0 rgba(0, 0, 0, 0.08);
 }
 
 .character-card--image {
@@ -50,13 +54,17 @@
   padding: 0;
 }
 
+.character-card--body__more {
+  background-color: #eee;
+}
+
 .character-card--body__title {
   color: #000;
 }
 
 .character-card--body__read-button {
   background-color: #252525;
-  border-color: #444444;
+  border-color: #444;
   color: #fff;
   padding: 2px 0;
   display: block;
@@ -65,14 +73,14 @@
 }
 
 .character-card--body__read-button:hover {
-  background-color: #333333;
-  border-color: #444444;
+  background-color: #333;
+  border-color: #444;
   color: #fff;
 }
 
 .character-card--body__read-button:active {
-  background-color: #333333 !important;
-  border-color: #444444 !important;
+  background-color: #333 !important;
+  border-color: #444 !important;
 }
 
 .character-card--body__read-button:active:focus {
@@ -92,7 +100,7 @@
 
 .character-card--body__choose-button {
   background-color: #252525;
-  border-color: #444444;
+  border-color: #444;
   color: #fff;
   padding: 5px 0;
   display: block;
@@ -105,16 +113,16 @@
 }
 
 .character-card--body__choose-button:hover {
-  background-color: #333333;
-  border-color: #444444;
+  background-color: #333;
+  border-color: #444;
   -webkit-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
           box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
   color: #fff;
 }
 
 .character-card--body__choose-button:active {
-  background-color: #333333 !important;
-  border-color: #444444 !important;
+  background-color: #333 !important;
+  border-color: #444 !important;
 }
 
 .character-card--body__choose-button:active:focus {
@@ -149,19 +157,7 @@ body {
   margin-left: 0 !important;
 }
 
-.char-selected {
-  opacity: 0.7;
-}
-
 .hide {
   display: none;
-}
-
-canvas {
-  padding-left: 0;
-  padding-right: 0;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
 }
 /*# sourceMappingURL=style.css.map */
