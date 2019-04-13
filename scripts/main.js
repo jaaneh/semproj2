@@ -40,6 +40,11 @@ for (let i = 0; i < characters.length; i++) {
 		.catch((err) => console.error(err));
 }
 
+// Support modal open on smaller/mobile devices that uses touch screens.
+function openHtp() {
+	$('#htpModal').modal('show');
+}
+
 function getDevice() {
 	const isMobile = new RegExp('Android|webOS|iPhone|iPad|BlackBerry|Windows Phone|Opera Mini|IEMobile|Mobile', 'i');
 	if (isMobile.test(navigator.userAgent)) {
@@ -53,7 +58,7 @@ setTimeout(() => {
 	for (let i = 0; i < characters.length; i++) {
 		const btn = document.querySelector(`[data-charid="${characters[i]}"]`);
 		const charCard = document.getElementById(`${characters[i]}`);
-		btn.addEventListener(getDevice(), () => {
+		btn.addEventListener('click', () => {
 			charCard.classList.toggle('char-selected');
 
 			let playerSelected = document.createElement('h5');
@@ -83,7 +88,7 @@ setTimeout(() => {
 			}
 		});
 		const readMore = document.querySelector(`[data-readBtn="read-${characters[i]}"]`);
-		readMore.addEventListener(getDevice(), () => {
+		readMore.addEventListener('click', () => {
 			const readMoreChar = document.querySelector(`[data-info="${characters[i]}"]`);
 			readMoreChar.classList.toggle('hide');
 		});

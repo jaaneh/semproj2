@@ -1,3 +1,5 @@
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
 const player1 = document.getElementById('player1');
 const player2 = document.getElementById('player2');
 const getPlayer1 = sessionStorage.getItem('Player1');
@@ -14,7 +16,7 @@ const players = [
 	{
 		id: getPlayer1,
 		name: getPlayer1Name,
-		color: '#444',
+		color: '#777',
 		player: 0,
 		locX: 0,
 		locY: 0
@@ -22,30 +24,17 @@ const players = [
 	{
 		id: getPlayer2,
 		name: getPlayer2Name,
-		color: '#777',
+		color: '#999',
 		player: 1,
 		locX: 0,
 		locY: 0
 	}
 ];
 
-// Add playing characters to page.
-player1.innerHTML += `
-	<div class="character">
-		<div class="card character-card">
-			<div class="card-header character-card--header"><b>Player 1:</b> ${players[0].name}</div>
-			<img src="https://via.placeholder.com/278x278" class="card-img-top character-card--image" alt="...">
-		</div>
-	</div>
-`;
-player2.innerHTML += `
-	<div class="character">
-		<div class="card character-card">
-			<div class="card-header character-card--header"><b>Player 2:</b> ${players[1].name}</div>
-			<img src="https://via.placeholder.com/278x278" class="card-img-top character-card--image" alt="...">
-		</div>
-	</div>
-`;
+// Support modal open on smaller/mobile devices that uses touch screens.
+function openHtp() {
+	$('#htpModal').modal('show');
+}
 
 function getDevice() {
 	const isMobile = new RegExp('Android|webOS|iPhone|iPad|BlackBerry|Windows Phone|Opera Mini|IEMobile|Mobile', 'i');
@@ -74,11 +63,33 @@ function checkOnButton(pos, button) {
 	return pos.x > button.x && pos.x < button.x + button.width && pos.y < button.y + button.heigth && pos.y > button.y;
 }
 
-function rollDice(ctx) {
+function movePlayers(playerTurn, locX, locY) {
+	// Clear rect using old location.
+	if (players[playerTurn].locX && players[playerTurn].locY) {
+		ctx.clearRect(players[playerTurn].locX, players[playerTurn].locY, 25, 25);
+	}
+
+	//drawCanvas(); // canvas draw to make sure players are drawn on top of board.
+
+	// Save new location
+	players[playerTurn].locX = locX;
+	players[playerTurn].locY = locY;
+
+	ctx.fillStyle = players[playerTurn].color;
+
+	ctx.fillRect(locX, locY, 25, 25);
+	ctx.stroke();
+}
+
+function rollDice() {
 	const dice = Math.floor(Math.random() * 6) + 1;
+	console.log(`Dice rolled ${dice}`);
 	playAudio();
 	if (dice === 6) {
-		drawRollDiceButton(ctx, playerTurn); // draw button.
+		/********************************************\
+		Move player token before switching player turn
+		\********************************************/
+		movePlayers(playerTurn, 25, 25);
 		doubleSix = doubleSix + 1;
 		if (doubleSix === 2) {
 			doubleSix = 0;
@@ -86,15 +97,20 @@ function rollDice(ctx) {
 		} else {
 			playerTurn === 1 ? (playerTurn = 1) : (playerTurn = 0);
 		}
+		drawRollDiceButton(playerTurn); // draw button.
 	} else if (dice !== 6) {
-		drawRollDiceButton(ctx, playerTurn); // draw button.
+		/********************************************\
+		Move player token before switching player turn
+		\********************************************/
+		movePlayers(playerTurn, 25, 25);
 		doubleSix = 0;
 		playerTurn === 1 ? (playerTurn = 0) : (playerTurn = 1);
+		drawRollDiceButton(playerTurn); // draw button.
 	}
-	drawDice(ctx, dice);
+	drawDice(dice);
 }
 
-function drawRollDiceButton(ctx, playerTurn) {
+function drawRollDiceButton(playerTurn) {
 	ctx.clearRect(200, 150, 200, 80); // clear current button
 	ctx.beginPath();
 	ctx.rect(200, 150, 200, 80);
@@ -111,25 +127,12 @@ function drawRollDiceButton(ctx, playerTurn) {
 	ctx.fillStyle = '#fff';
 }
 
-function drawDice(ctx, dice) {
+function drawDice(dice) {
 	const diceImage = new Image();
 	diceImage.src = `images/dice/${dice}.png`;
 	diceImage.onload = function() {
 		ctx.drawImage(diceImage, 250, 240, canvas.width / 6, canvas.height / 6);
 	};
-}
-
-// Canvas
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-
-// Check if user browser support canvas.
-if (!ctx) {
-	const noCanvas = document.getElementById('noCanvas');
-	noCanvas.style.display = 'block';
-	canvas.style.display = 'none';
-} else {
-	drawCanvas();
 }
 
 function drawCanvas() {
@@ -158,13 +161,13 @@ function drawCanvas() {
 	let posY = 0;
 	let tileNum = 0;
 
-	// event listener for click event
+	// event listener for dice event
 	canvas.addEventListener(
-		getDevice(),
+		'click',
 		(e) => {
 			const mousePos = getMousePos(canvas, e);
 			if (checkOnButton(mousePos, rollDiceButton)) {
-				rollDice(ctx);
+				rollDice();
 			}
 		},
 		false
@@ -190,5 +193,36 @@ function drawCanvas() {
 		}
 	}, 100);
 
-	drawRollDiceButton(ctx, playerTurn);
+	drawRollDiceButton(playerTurn);
+}
+
+if (getPlayer1 && getPlayer1Name && getPlayer2 && getPlayer2Name) {
+	// Add playing characters to page.
+	player1.innerHTML += `
+	<div class="character">
+		<div class="card character-card">
+			<div class="card-header character-card--header"><b>Player 1:</b> ${players[0].name}</div>
+			<img src="https://via.placeholder.com/278x278" class="card-img-top character-card--image" alt="...">
+		</div>
+	</div>
+`;
+	player2.innerHTML += `
+	<div class="character">
+		<div class="card character-card">
+			<div class="card-header character-card--header"><b>Player 2:</b> ${players[1].name}</div>
+			<img src="https://via.placeholder.com/278x278" class="card-img-top character-card--image" alt="...">
+		</div>
+	</div>
+`;
+
+	// Check if user browser support canvas.
+	if (!ctx) {
+		const noCanvas = document.getElementById('noCanvas');
+		noCanvas.style.display = 'block';
+		canvas.style.display = 'none';
+	} else {
+		drawCanvas();
+	}
+} else {
+	$('#missingPlayers').modal('show');
 }
