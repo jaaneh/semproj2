@@ -102,7 +102,7 @@ fetch('../tilePositions.json')
 	})
 	.catch((err) => console.error(err));
 
-async function rollDice() {
+function rollDice() {
 	const dice = Math.floor(Math.random() * 6) + 1;
 	console.log(`Dice rolled ${dice}`);
 	playAudio();
