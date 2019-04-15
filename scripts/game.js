@@ -1,35 +1,52 @@
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-const player1 = document.getElementById('player1');
-const player2 = document.getElementById('player2');
-const getPlayer1 = sessionStorage.getItem('Player1');
-const getPlayer2 = sessionStorage.getItem('Player2');
-const getPlayer1Name = sessionStorage.getItem('Player1_Name');
-const getPlayer2Name = sessionStorage.getItem('Player2_Name');
+// const declarations.
+const canvas = document.getElementById('gameCanvas'),
+	ctx = canvas.getContext('2d'),
+	player1 = document.getElementById('player1'),
+	player2 = document.getElementById('player2'),
+	getPlayer1 = sessionStorage.getItem('Player1'),
+	getPlayer2 = sessionStorage.getItem('Player2'),
+	getPlayer1Name = sessionStorage.getItem('Player1_Name'),
+	getPlayer2Name = sessionStorage.getItem('Player2_Name'),
+	rollDiceButton = { x: 200, y: 150, width: 200, heigth: 80 },
+	audio = new Audio('sounds/rolldice.mp3'),
+	p1 = new Image(),
+	p2 = new Image(),
+	path = new Image(),
+	trap = new Image(),
+	players = [
+		{
+			id: getPlayer1,
+			name: getPlayer1Name,
+			locX: 0,
+			locY: 0
+		},
+		{
+			id: getPlayer2,
+			name: getPlayer2Name,
+			locX: 0,
+			locY: 0
+		}
+	];
 
-// const API_URL = 'https://anapioficeandfire.com/api/characters/';
-const audio = new Audio('sounds/rolldice.mp3');
-let playerTurn = 0;
-let doubleSix = 0;
-const rollDiceButton = { x: 200, y: 150, width: 200, heigth: 80 };
-const players = [
-	{
-		id: getPlayer1,
-		name: getPlayer1Name,
-		color: '#777',
-		player: 0,
-		locX: 0,
-		locY: 0
-	},
-	{
-		id: getPlayer2,
-		name: getPlayer2Name,
-		color: '#999',
-		player: 1,
-		locX: 0,
-		locY: 0
-	}
-];
+// let declarations.
+let posX = 0,
+	posY = 0,
+	tileNum = 0,
+	playerTurn = 0,
+	doubleSix = 0,
+	newRoll,
+	tilePos,
+	oldX = 0,
+	oldY = 0,
+	newX,
+	newY,
+	playerIcon;
+
+// Set images for the path, trap, player1 token, & player2 token.
+path.src = 'images/board/icon.png';
+trap.src = 'images/board/trap.png';
+p1.src = 'images/players/player1.png';
+p2.src = 'images/players/player2.png';
 
 // Support modal open on smaller/mobile devices that uses touch screens.
 function openHtp() {
@@ -63,33 +80,50 @@ function checkOnButton(pos, button) {
 	return pos.x > button.x && pos.x < button.x + button.width && pos.y < button.y + button.heigth && pos.y > button.y;
 }
 
-function movePlayers(playerTurn, locX, locY) {
+function movePlayers(playerTurn, oldX, oldY, newX, newY) {
 	// Clear rect using old location.
 	if (players[playerTurn].locX && players[playerTurn].locY) {
-		ctx.clearRect(players[playerTurn].locX, players[playerTurn].locY, 25, 25);
+		ctx.clearRect(oldX, oldY, 50, 50);
 	}
-
-	//drawCanvas(); // canvas draw to make sure players are drawn on top of board.
+	playerTurn === 0 ? (playerIcon = p1) : (playerIcon = p2);
 
 	// Save new location
-	players[playerTurn].locX = locX;
-	players[playerTurn].locY = locY;
+	players[playerTurn].locX = newX;
+	players[playerTurn].locY = newY;
 
-	ctx.fillStyle = players[playerTurn].color;
-
-	ctx.fillRect(locX, locY, 25, 25);
-	ctx.stroke();
+	// Draw image
+	ctx.drawImage(playerIcon, newX, newY, 62, 62);
 }
 
-function rollDice() {
+fetch('../tilePositions.json')
+	.then((res) => res.json())
+	.then((json) => {
+		tilePos = json;
+	})
+	.catch((err) => console.error(err));
+
+async function rollDice() {
 	const dice = Math.floor(Math.random() * 6) + 1;
 	console.log(`Dice rolled ${dice}`);
 	playAudio();
+
+	/*
+	This whole section is porbably incorrect, and definitely needs refactoring.
+
+	(?) Incorrect calculations for newX & newY.
+	(?) Incorrect calculations for player's 2nd go.
+
+	- Figure out best way to clearRect of old position using images. 
+		-- Go back to fillRect() instead of drawImage()?
+	- Both players using same oldY & oldX, seperate these.
+	*/
+
+	players[playerTurn].locX ? (oldX = players[playerTurn].locX) : 0;
+	players[playerTurn].locY ? (oldY = players[playerTurn].locY) : 0;
+	newX = tilePos[dice].x + oldX;
+	newY = tilePos[dice].y + oldY;
 	if (dice === 6) {
-		/********************************************\
-		Move player token before switching player turn
-		\********************************************/
-		movePlayers(playerTurn, 25, 25);
+		movePlayers(playerTurn, oldX, oldY, newX, newY); // moves player
 		doubleSix = doubleSix + 1;
 		if (doubleSix === 2) {
 			doubleSix = 0;
@@ -99,13 +133,10 @@ function rollDice() {
 		}
 		drawRollDiceButton(playerTurn); // draw button.
 	} else if (dice !== 6) {
-		/********************************************\
-		Move player token before switching player turn
-		\********************************************/
-		movePlayers(playerTurn, 25, 25);
+		movePlayers(playerTurn, oldX, oldY, newX, newY); // moves player
 		doubleSix = 0;
 		playerTurn === 1 ? (playerTurn = 0) : (playerTurn = 1);
-		drawRollDiceButton(playerTurn); // draw button.
+		drawRollDiceButton(playerTurn); // draw roll dice button.
 	}
 	drawDice(dice);
 }
@@ -151,15 +182,6 @@ function drawCanvas() {
 		[ 25, 0, 0, 0, 0, 0, 0, 0, 15 ],
 		[ 24, 23, 22, 21, 20, 19, 18, 17, 16 ]
 	];
-
-	const path = new Image();
-	const trap = new Image();
-	path.src = 'images/board/icon.png';
-	trap.src = 'images/board/trap.png';
-
-	let posX = 0;
-	let posY = 0;
-	let tileNum = 0;
 
 	// event listener for dice event
 	canvas.addEventListener(

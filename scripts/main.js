@@ -93,4 +93,4 @@ setTimeout(() => {
 			readMoreChar.classList.toggle('hide');
 		});
 	}
-}, 150);
+}, 400);
