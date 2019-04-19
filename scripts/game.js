@@ -9,20 +9,22 @@ const canvas = document.getElementById('gameCanvas'),
 	getPlayer2Name = sessionStorage.getItem('Player2_Name'),
 	rollDiceButton = { x: 200, y: 150, width: 200, heigth: 80 },
 	audio = new Audio('sounds/rolldice.mp3'),
-	p1 = new Image(),
-	p2 = new Image(),
 	path = new Image(),
 	trap = new Image(),
 	players = [
 		{
 			id: getPlayer1,
 			name: getPlayer1Name,
+			color: '#111',
+			pos: 0,
 			locX: 0,
 			locY: 0
 		},
 		{
 			id: getPlayer2,
 			name: getPlayer2Name,
+			color: '#999',
+			pos: 0,
 			locX: 0,
 			locY: 0
 		}
@@ -45,8 +47,6 @@ let posX = 0,
 // Set images for the path, trap, player1 token, & player2 token.
 path.src = 'images/board/icon.png';
 trap.src = 'images/board/trap.png';
-p1.src = 'images/players/player1.png';
-p2.src = 'images/players/player2.png';
 
 // Support modal open on smaller/mobile devices that uses touch screens.
 function openHtp() {
@@ -80,19 +80,21 @@ function checkOnButton(pos, button) {
 	return pos.x > button.x && pos.x < button.x + button.width && pos.y < button.y + button.heigth && pos.y > button.y;
 }
 
-function movePlayers(playerTurn, oldX, oldY, newX, newY) {
+function movePlayers(playerTurn, dice, newX, newY) {
 	// Clear rect using old location.
-	if (players[playerTurn].locX && players[playerTurn].locY) {
-		ctx.clearRect(oldX, oldY, 50, 50);
+	if (players[playerTurn].locX || players[playerTurn].locY) {
+		ctx.clearRect(players[playerTurn].locX, players[playerTurn].locY, 35, 35);
 	}
-	playerTurn === 0 ? (playerIcon = p1) : (playerIcon = p2);
 
 	// Save new location
 	players[playerTurn].locX = newX;
 	players[playerTurn].locY = newY;
+	players[playerTurn].pos = players[playerTurn].pos + dice;
 
 	// Draw image
-	ctx.drawImage(playerIcon, newX, newY, 62, 62);
+	ctx.fillStyle = players[playerTurn].color;
+
+	ctx.fillRect(newX, newY, 35, 35);
 }
 
 fetch('../tilePositions.json')
@@ -108,22 +110,18 @@ function rollDice() {
 	playAudio();
 
 	/*
-	This whole section is porbably incorrect, and definitely needs refactoring.
+	- clearRect() on 2nd+ throws. 
+		-- Re-draw canvas, keep position of players.
 
-	(?) Incorrect calculations for newX & newY.
-	(?) Incorrect calculations for player's 2nd go.
-
-	- Figure out best way to clearRect of old position using images. 
-		-- Go back to fillRect() instead of drawImage()?
-	- Both players using same oldY & oldX, seperate these.
+	- Check if pos + dice (line 119/120) are above pos of tile 30.
+		-- Set tile to 30.
+		-- Announce winner.
 	*/
 
-	players[playerTurn].locX ? (oldX = players[playerTurn].locX) : 0;
-	players[playerTurn].locY ? (oldY = players[playerTurn].locY) : 0;
-	newX = tilePos[dice].x + oldX;
-	newY = tilePos[dice].y + oldY;
+	newX = tilePos[players[playerTurn].pos + dice].x;
+	newY = tilePos[players[playerTurn].pos + dice].y;
 	if (dice === 6) {
-		movePlayers(playerTurn, oldX, oldY, newX, newY); // moves player
+		movePlayers(playerTurn, dice, newX, newY); // moves player
 		doubleSix = doubleSix + 1;
 		if (doubleSix === 2) {
 			doubleSix = 0;
@@ -133,7 +131,7 @@ function rollDice() {
 		}
 		drawRollDiceButton(playerTurn); // draw button.
 	} else if (dice !== 6) {
-		movePlayers(playerTurn, oldX, oldY, newX, newY); // moves player
+		movePlayers(playerTurn, dice, newX, newY); // moves player
 		doubleSix = 0;
 		playerTurn === 1 ? (playerTurn = 0) : (playerTurn = 1);
 		drawRollDiceButton(playerTurn); // draw roll dice button.
