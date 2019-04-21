@@ -44,22 +44,25 @@ let posX = 0,
 	newY,
 	playerIcon;
 
+trap.onload = function() {
+	checkCtx();
+};
+
 // Set images for the path, trap, player1 token, & player2 token.
 path.src = 'images/board/icon.png';
 trap.src = 'images/board/trap.png';
 
+// Fetch tile positions.
+fetch('../tilePositions.json')
+	.then((res) => res.json())
+	.then((json) => {
+		tilePos = json;
+	})
+	.catch((err) => console.error(err));
+
 // Support modal open on smaller/mobile devices that uses touch screens.
 function openHtp() {
 	$('#htpModal').modal('show');
-}
-
-function getDevice() {
-	const isMobile = new RegExp('Android|webOS|iPhone|iPad|BlackBerry|Windows Phone|Opera Mini|IEMobile|Mobile', 'i');
-	if (isMobile.test(navigator.userAgent)) {
-		return 'touchstart';
-	} else {
-		return 'click';
-	}
 }
 
 function getMousePos(canvas, e) {
@@ -81,57 +84,63 @@ function checkOnButton(pos, button) {
 }
 
 function movePlayers(playerTurn, dice, newX, newY) {
+	let player = players[playerTurn];
+
 	// Clear rect using old location.
-	if (players[playerTurn].locX || players[playerTurn].locY) {
-		ctx.clearRect(players[playerTurn].locX, players[playerTurn].locY, 35, 35);
+	if (player.locX || player.locY) {
+		ctx.clearRect(player.locX, player.locY, 35, 35);
 	}
 
-	// Save new location
-	players[playerTurn].locX = newX;
-	players[playerTurn].locY = newY;
-	players[playerTurn].pos = players[playerTurn].pos + dice;
+	// Save new location to players array.
+	player.locX = newX;
+	player.locY = newY;
+
+	// check if new position is more than 30, if so set position to 30. else, keep new position.
+	player.pos + dice > 30 ? (player.pos = 30) : (player.pos = player.pos + dice);
 
 	// Draw image
-	ctx.fillStyle = players[playerTurn].color;
-
+	ctx.fillStyle = player.color;
 	ctx.fillRect(newX, newY, 35, 35);
 }
 
-fetch('../tilePositions.json')
-	.then((res) => res.json())
-	.then((json) => {
-		tilePos = json;
-	})
-	.catch((err) => console.error(err));
-
 function rollDice() {
+	let player = players[playerTurn];
 	const dice = Math.floor(Math.random() * 6) + 1;
 	console.log(`Dice rolled ${dice}`);
 	playAudio();
 
 	/*
-	- clearRect() on 2nd+ throws. 
-		-- Re-draw canvas, keep position of players.
+	clearRect() on 2nd+ throws. 
+		- Re-draw canvas, keep position of players.
 
-	- Check if pos + dice (line 119/120) are above pos of tile 30.
-		-- Set tile to 30.
-		-- Announce winner.
+	Check if pos + dice are above pos of tile 30.
+		- Announce winner.
+			--Disable dice button
+			-- Winner modal pop-up.
 	*/
 
-	newX = tilePos[players[playerTurn].pos + dice].x;
-	newY = tilePos[players[playerTurn].pos + dice].y;
+	// Set newX & newY to 30 if new position + dice is more than 30.
+	if (player.pos + dice >= 30) {
+		newX = tilePos[30].x;
+		newY = tilePos[30].y;
+		player.pos = 30;
+	} else {
+		newX = tilePos[player.pos + dice].x;
+		newY = tilePos[player.pos + dice].y;
+	}
 	if (dice === 6) {
-		movePlayers(playerTurn, dice, newX, newY); // moves player
+		movePlayers(playerTurn, dice, newX, newY); // move player
 		doubleSix = doubleSix + 1;
 		if (doubleSix === 2) {
+			// since doubleSix is equal 2, we need to reset it back to 0. We also need to switch player turns.
 			doubleSix = 0;
 			playerTurn === 1 ? (playerTurn = 0) : (playerTurn = 1);
 		} else {
 			playerTurn === 1 ? (playerTurn = 1) : (playerTurn = 0);
 		}
-		drawRollDiceButton(playerTurn); // draw button.
+		drawRollDiceButton(playerTurn); // draw roll dice button.
 	} else if (dice !== 6) {
-		movePlayers(playerTurn, dice, newX, newY); // moves player
+		movePlayers(playerTurn, dice, newX, newY); // move player
 		doubleSix = 0;
 		playerTurn === 1 ? (playerTurn = 0) : (playerTurn = 1);
 		drawRollDiceButton(playerTurn); // draw roll dice button.
@@ -166,7 +175,13 @@ function drawDice(dice) {
 
 function drawCanvas() {
 	canvas.style = 'margin-top:15px;';
-	ctx.clearRect(0, 0, 600, 600);
+
+	// Reset posY & posX to 0, so canvas will be drawn from 0, 0 again.
+	posY = 0;
+	posX = 0;
+
+	// Clear current canvas before starting the redraw.
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	const trapArray = [ 6, 11, 16, 21, 27 ];
 
@@ -181,39 +196,47 @@ function drawCanvas() {
 		[ 24, 23, 22, 21, 20, 19, 18, 17, 16 ]
 	];
 
-	// event listener for dice event
-	canvas.addEventListener(
-		'click',
-		(e) => {
-			const mousePos = getMousePos(canvas, e);
-			if (checkOnButton(mousePos, rollDiceButton)) {
-				rollDice();
-			}
-		},
-		false
-	);
-
-	setTimeout(() => {
-		for (let i = 0; i < gameArray.length; i++) {
-			for (let j = 0; j < gameArray[i].length; j++) {
-				if (gameArray[i][j] >= 1) {
-					if (trapArray.includes(gameArray[i][j])) {
-						ctx.drawImage(trap, posX, posY, 62, 62);
-					} else {
-						ctx.drawImage(path, posX, posY, 62, 62);
-					}
-					tileNum = gameArray[i][j];
-					ctx.font = '18px Arial';
-					ctx.fillText(tileNum, posX + 23, posY + 37, 62, 62);
+	for (let i = 0; i < gameArray.length; i++) {
+		for (let j = 0; j < gameArray[i].length; j++) {
+			if (gameArray[i][j] >= 1) {
+				if (trapArray.includes(gameArray[i][j])) {
+					ctx.drawImage(trap, posX, posY, 62, 62);
+				} else {
+					ctx.drawImage(path, posX, posY, 62, 62);
 				}
-				posX += 67;
+				tileNum = gameArray[i][j];
+				ctx.font = '18px Arial';
+				ctx.fillText(tileNum, posX + 23, posY + 37, 62, 62);
 			}
-			posX = 0;
-			posY += 67;
+			posX += 67;
 		}
-	}, 100);
+		posX = 0;
+		posY += 67;
+	}
 
 	drawRollDiceButton(playerTurn);
+}
+
+// event listener for dice event
+canvas.addEventListener(
+	'click',
+	(e) => {
+		const mousePos = getMousePos(canvas, e);
+		if (checkOnButton(mousePos, rollDiceButton)) {
+			rollDice();
+		}
+	},
+	false
+);
+
+function checkCtx() {
+	if (!ctx) {
+		const noCanvas = document.getElementById('noCanvas');
+		noCanvas.style.display = 'block';
+		canvas.style.display = 'none';
+	} else {
+		drawCanvas();
+	}
 }
 
 if (getPlayer1 && getPlayer1Name && getPlayer2 && getPlayer2Name) {
@@ -222,7 +245,7 @@ if (getPlayer1 && getPlayer1Name && getPlayer2 && getPlayer2Name) {
 	<div class="character">
 		<div class="card character-card">
 			<div class="card-header character-card--header"><b>Player 1:</b> ${players[0].name}</div>
-			<img src="https://via.placeholder.com/278x278" class="card-img-top character-card--image" alt="...">
+			<img src="images/characters/${players[0].id}.jpg" class="mx-auto card-img-top character-card--game-image" alt="...">
 		</div>
 	</div>
 `;
@@ -230,19 +253,12 @@ if (getPlayer1 && getPlayer1Name && getPlayer2 && getPlayer2Name) {
 	<div class="character">
 		<div class="card character-card">
 			<div class="card-header character-card--header"><b>Player 2:</b> ${players[1].name}</div>
-			<img src="https://via.placeholder.com/278x278" class="card-img-top character-card--image" alt="...">
+			<img src="images/characters/${players[1].id}.jpg" class="mx-auto card-img-top character-card--game-image" alt="...">
 		</div>
 	</div>
 `;
 
-	// Check if user browser support canvas.
-	if (!ctx) {
-		const noCanvas = document.getElementById('noCanvas');
-		noCanvas.style.display = 'block';
-		canvas.style.display = 'none';
-	} else {
-		drawCanvas();
-	}
+	checkCtx();
 } else {
 	$('#missingPlayers').modal('show');
 }

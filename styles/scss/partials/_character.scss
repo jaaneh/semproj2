@@ -23,8 +23,11 @@
 		&:hover {
 			box-shadow: $card-shadow;
 		}
-		&--image {
-			width: 100%;
+		&--game-image {
+			max-width: 100%;
+		}
+		&--home-image {
+			max-width: 250px;
 		}
 		&--header {
 			text-align: center;
