@@ -10,8 +10,8 @@ let fetchedCharacters = [],
 
 for (let i = 0; i < characters.length; i++) {
 	fetch(API_URL + characters[i])
-		.then((res) => res.json())
-		.then((json) => {
+		.then(res => res.json())
+		.then(json => {
 			fetchedCharacters.push(json);
 			key = json.url.split('/')[5];
 			charName = json.name;
@@ -37,7 +37,7 @@ for (let i = 0; i < characters.length; i++) {
       </div>
       `;
 		})
-		.catch((err) => console.error(err));
+		.catch(err => console.error(err));
 }
 
 // Support modal open on smaller/mobile devices that uses touch screens.
@@ -96,46 +96,3 @@ window.onload = function() {
 		});
 	}
 };
-
-// setTimeout(() => {
-// 	for (let i = 0; i < characters.length; i++) {
-// 		const btn = document.querySelector(`[data-charid="${characters[i]}"]`);
-// 		const charCard = document.getElementById(`${characters[i]}`);
-// 		setTimeout(() => {
-// 			btn.addEventListener('click', () => {
-// 				charCard.classList.toggle('char-selected');
-
-// 				let playerSelected = document.createElement('h5');
-// 				playerSelected.setAttribute('id', `selected-${characters[i]}`);
-
-// 				const isSelected = document.getElementById(`selected-${characters[i]}`);
-// 				if (isSelected) {
-// 					player = player - 1;
-// 					charCard.removeChild(charCard.childNodes[7]);
-// 				} else {
-// 					player = player + 1;
-// 					playerSelected.appendChild(document.createTextNode(`Player ${player}`));
-// 					charCard.appendChild(playerSelected);
-// 				}
-// 				//if (player === 2) window.location = '/game.html';
-// 				if (player === 2) {
-// 					// Using jQuery because Bootstrap supports it.
-// 					$('#selectedModal').modal('show');
-// 				}
-
-// 				// Add players to session storage for use on game page.
-// 				// Using session storage as it removes player details when browser/tab is closed.
-// 				// Using if statement to prevent "Player0" to be added when a player is selected then deselected.
-// 				if (player === 1 || player === 2) {
-// 					sessionStorage.setItem(`Player${player}`, `${characters[i]}`);
-// 					sessionStorage.setItem(`Player${player}_Name`, `${fetchedCharacters[i].name}`);
-// 				}
-// 			});
-// 		}, 100);
-// 		const readMore = document.querySelector(`[data-readBtn="read-${characters[i]}"]`);
-// 		readMore.addEventListener('click', () => {
-// 			const readMoreChar = document.querySelector(`[data-info="${characters[i]}"]`);
-// 			readMoreChar.classList.toggle('hide');
-// 		});
-// 	}
-// }, 100);

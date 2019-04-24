@@ -15,6 +15,7 @@ module.exports = {
 		quotes: ['error', 'single'],
 		semi: ['error', 'always'],
 		'no-console': 'off',
-		'no-unused-vars': 'off'
+		'no-unused-vars': 'off',
+		'array-bracket-spacing': ['error', 'always']
 	}
 };
