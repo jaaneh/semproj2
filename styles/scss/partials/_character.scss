@@ -1,14 +1,34 @@
 @import '../utilities/variables';
+@import '../utilities/fonts';
 
 .char-selected {
 	opacity: 0.7;
 }
 
+.card {
+	background-color: $four-half;
+}
+
+#charPick {
+	padding: 25px;
+	background-color: #88888830;
+}
+
+.read-selected {
+	background-color: $four !important;
+	box-shadow: $big-shadow;
+}
+
 .character {
 	padding: 0;
 	&-card {
-		margin: 15px 5px !important;
+		border: none;
+		margin: 0 10px 20px !important;
 		transition: 0.5s ease;
+		box-shadow: $small-shadow;
+		&--game {
+			margin: 15px 0 0;
+		}
 		> [id^='selected-'] {
 			background-color: #555;
 			border-color: #777;
@@ -31,19 +51,43 @@
 		}
 		&--header {
 			text-align: center;
-			font-size: 16px;
+			font-size: 20px;
+			padding: 10px 0 5px;
+			margin-bottom: -5px;
+			background: $four-half;
+			color: $white;
+			font-weight: bold;
+			font-family: SortsMillGoudy-Regular;
+		}
+		&--header-game {
+			text-align: center;
+			font-size: 18px;
 			padding: 8px 0;
+			background: $four-half;
+			color: $white;
+			font-family: SortsMillGoudy-Regular;
 		}
 		&--body {
 			padding: 0;
+			&__more-title {
+				font-weight: bold;
+				margin-right: 15px;
+				font-size: 16px;
+			}
+			&__more-text {
+				display: block;
+				margin-left: 15px;
+				font-size: 14px;
+			}
 			&__more {
-				background-color: #eee;
+				background-color: $four-half;
+				color: $white;
 			}
 			&__title {
 				color: #000;
 			}
 			&__read-button {
-				background-color: $main;
+				background-color: $four-half;
 				border-color: $main-two;
 				color: $white;
 				padding: 2px 0;
@@ -51,13 +95,13 @@
 				width: 100%;
 				border-radius: 0;
 				&:hover {
-					background-color: $main-hover;
-					border-color: $main-two;
+					background-color: $four;
+					border-color: $seven;
 					color: $white;
 				}
 				&:active {
-					background-color: $main-hover !important;
-					border-color: $main-two !important;
+					background-color: $nine !important;
+					border-color: $seven !important;
 					&:focus {
 						box-shadow: $big-shadow !important;
 					}
@@ -70,8 +114,8 @@
 				}
 			}
 			&__choose-button {
-				background-color: $main;
-				border-color: $main-two;
+				background-color: $four;
+				border-color: $four-half;
 				color: $white;
 				padding: 5px 0;
 				display: block;
@@ -79,13 +123,13 @@
 				border-radius: 0;
 				transition: box-shadow 0.2s ease;
 				&:hover {
-					background-color: $main-hover;
-					border-color: $main-two;
+					background-color: $four;
+					border-color: $four-half;
 					box-shadow: $small-shadow;
 					color: $white;
 				}
 				&:active {
-					background-color: $main-hover !important;
+					background-color: $nine !important;
 					border-color: $main-two !important;
 					&:focus {
 						box-shadow: $big-shadow !important;

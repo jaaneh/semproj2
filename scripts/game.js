@@ -14,9 +14,6 @@
 	- Game/site logo.
 	- Game/site name.
 	- Image for all 10 characters. (Stick to face & only outlines. Transparent background, 250x250px).
-	- Move the two characters slightly away from each other on tiles.
-		- Add +locX/locY for player.
-		- Add a small/light drop shadow. (?)
 */
 
 // const declarations.
@@ -24,6 +21,8 @@ const canvas = document.getElementById('gameCanvas'),
 	ctx = canvas.getContext('2d'),
 	player1 = document.getElementById('player1'),
 	player2 = document.getElementById('player2'),
+	player1hr = document.getElementById('player1-hr'),
+	player2hr = document.getElementById('player2-hr'),
 	getPlayer1 = sessionStorage.getItem('Player1'),
 	getPlayer2 = sessionStorage.getItem('Player2'),
 	getPlayer1Name = sessionStorage.getItem('Player1_Name'),
@@ -44,7 +43,7 @@ const canvas = document.getElementById('gameCanvas'),
 		{
 			id: getPlayer2,
 			name: getPlayer2Name,
-			color: '#999',
+			color: '#888',
 			pos: 0,
 			locX: 0,
 			locY: 0
@@ -67,7 +66,7 @@ let posX = 0,
 	playerIcon,
 	otherPlayer = 0;
 
-trap.onload = function() {
+path.onload = function() {
 	checkCtx();
 };
 
@@ -97,15 +96,17 @@ function getMousePos(canvas, e) {
 }
 
 function announceWinner(playerTurn) {
-	let winner = players[playerTurn].name;
-
-	console.log(`${winner} wins the game!`);
-	sessionStorage.setItem('Winner_Name', `${winner}`);
+	/* 
+	Instead of adding player name, id, etc. seperately to sessionStorage, we can 
+	add the whole object. We'll have to wrap it in JSON.stringify(), then we'll 
+	use JSON.parse() when getting the player again in the winner.js file.
+	*/
+	sessionStorage.setItem('winner', JSON.stringify(players[playerTurn]));
 
 	// Redirect to winners page
 	setTimeout(() => {
 		location.href = '/winner.html';
-	}, 2500);
+	}, 2000);
 }
 
 function playAudio() {
@@ -118,16 +119,17 @@ function checkOnButton(pos, button) {
 	return pos.x > button.x && pos.x < button.x + button.width && pos.y < button.y + button.heigth && pos.y > button.y;
 }
 
-function movePlayers(playerTurn, dice, newX, newY) {
+function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 	let player = players[playerTurn];
 
 	otherPlayer = playerTurn == 1 ? 0 : 1;
+	let oPlayer = players[otherPlayer];
 
 	// Clear rect using old location.
 	drawCanvas();
 	if (players[otherPlayer].locX || players[otherPlayer].locY) {
 		ctx.fillStyle = players[otherPlayer].color;
-		ctx.fillRect(players[otherPlayer].locX, players[otherPlayer].locY, 35, 35);
+		ctx.fillRect(oPlayer.locX, oPlayer.locY, 35, 35);
 	}
 
 	// Save new location to players array.
@@ -135,7 +137,6 @@ function movePlayers(playerTurn, dice, newX, newY) {
 	player.locY = newY;
 
 	// Check if new position is more than 30, if so set position to 30. else, keep new position.
-	//player.pos + dice > 30 ? (player.pos = 30) : (player.pos = player.pos + dice);
 	if (player.pos + dice >= 30) {
 		player.pos = 30;
 		announceWinner(playerTurn);
@@ -149,47 +150,78 @@ function movePlayers(playerTurn, dice, newX, newY) {
 	if (trapArray.includes(player.pos)) {
 		switch (player.pos) {
 		case 6:
-			drawTrapMessage(6, 2, 4);
+			drawTrapMessage(6, 2, 4, playerTurn);
 			player.pos = 4;
-			player.locX = 201;
-			player.locY = 0;
 			ctx.fillStyle = players[playerTurn].color;
-			ctx.fillRect(201, 0, 35, 35);
+			if (playerTurn === 0) {
+				ctx.fillRect(201 + 5, 0 + 5, 35, 35);
+				player.locX = 201 + 5;
+				player.locY = 0 + 5;
+			} else {
+				player.locX = 201 + 15;
+				player.locY = 0 + 15;
+				ctx.fillRect(201 + 15, 0 + 15, 35, 35);
+			}
 			break;
 		case 11:
-			drawTrapMessage(11, 3, 8);
+			drawTrapMessage(11, 3, 8, playerTurn);
 			player.pos = 8;
-			player.locX = 469;
-			player.locY = 0;
 			ctx.fillStyle = players[playerTurn].color;
-			ctx.fillRect(469, 0, 35, 35);
+			if (playerTurn === 0) {
+				player.locX = 469 + 5;
+				player.locY = 0 + 5;
+				ctx.fillRect(469 + 5, 0 + 5, 35, 35);
+			} else {
+				player.locX = 469 + 15;
+				player.locY = 0 + 15;
+				ctx.fillRect(469 + 15, 0 + 15, 35, 35);
+			}
 			break;
 		case 16:
-			drawTrapMessage(16, 2, 14);
+			drawTrapMessage(16, 2, 14, playerTurn);
 			player.pos = 14;
-			player.locX = 536;
-			player.locY = 335;
 			ctx.fillStyle = players[playerTurn].color;
-			ctx.fillRect(536, 335, 35, 35);
+			if (playerTurn === 0) {
+				player.locX = 536 + 5;
+				player.locY = 335 + 5;
+				ctx.fillRect(536 + 5, 335 + 5, 35, 35);
+			} else {
+				player.locX = 536 + 15;
+				player.locY = 335 + 15;
+				ctx.fillRect(536 + 15, 335 + 15, 35, 35);
+			}
 			break;
 		case 21:
-			drawTrapMessage(21, 3, 18);
+			drawTrapMessage(21, 3, 18, playerTurn);
 			player.pos = 18;
-			player.locX = 402;
-			player.locY = 469;
 			ctx.fillStyle = players[playerTurn].color;
-			ctx.fillRect(402, 469, 35, 35);
+			if (playerTurn === 0) {
+				player.locX = 402 + 5;
+				player.locY = 469 + 5;
+				ctx.fillRect(402 + 5, 469 + 5, 35, 35);
+			} else {
+				player.locX = 402 + 15;
+				player.locY = 469 + 15;
+				ctx.fillRect(402 + 15, 469 + 15, 35, 35);
+			}
 			break;
 		case 27:
-			drawTrapMessage(27, 4, 23);
+			drawTrapMessage(27, 4, 23, playerTurn);
 			player.pos = 23;
-			player.locX = 0;
-			player.locY = 268;
 			ctx.fillStyle = players[playerTurn].color;
-			ctx.fillRect(67, 469, 35, 35);
+			if (playerTurn === 0) {
+				player.locX = 0 + 5;
+				player.locY = 268 + 5;
+				ctx.fillRect(67 + 5, 469 + 5, 35, 35);
+			} else {
+				player.locX = 0 + 15;
+				player.locY = 268 + 15;
+				ctx.fillRect(67 + 15, 469 + 15, 35, 35);
+			}
 			break;
 		}
 	} else {
+		if (dice === 6 && player.pos < 30 && doubleSix !== 2) drawDoubleMessage(playerTurn); // draw double 6 text.
 		ctx.fillStyle = players[playerTurn].color;
 		ctx.fillRect(newX, newY, 35, 35);
 	}
@@ -197,22 +229,32 @@ function movePlayers(playerTurn, dice, newX, newY) {
 
 function rollDice() {
 	let player = players[playerTurn];
-	const dice = Math.floor(Math.random() * 6) + 1;
+	const dice = Math.floor(Math.random() * 6) + 1; // dice
 	console.log(`Dice rolled ${dice}`);
 	// playAudio();
 
 	// Set newX & newY to 30 if new position + dice is more than 30.
 	if (player.pos + dice >= 30) {
-		newX = tilePos[30].x;
-		newY = tilePos[30].y;
+		if (playerTurn === 0) {
+			newX = tilePos[30].x + 5;
+			newY = tilePos[30].y + 5;
+		} else {
+			newX = tilePos[30].x + 15;
+			newY = tilePos[30].y + 15;
+		}
 		player.pos = 30;
 	} else {
-		newX = tilePos[player.pos + dice].x;
-		newY = tilePos[player.pos + dice].y;
+		if (playerTurn === 0) {
+			newX = tilePos[player.pos + dice].x + 5;
+			newY = tilePos[player.pos + dice].y + 5;
+		} else {
+			newX = tilePos[player.pos + dice].x + 15;
+			newY = tilePos[player.pos + dice].y + 15;
+		}
 	}
 	if (dice === 6) {
-		movePlayers(playerTurn, dice, newX, newY); // move player
 		doubleSix = doubleSix + 1;
+		movePlayers(playerTurn, dice, newX, newY, doubleSix); // move player
 		if (doubleSix === 2) {
 			// since doubleSix is equal 2, we need to reset it back to 0. We also need to switch player turns.
 			doubleSix = 0;
@@ -222,7 +264,7 @@ function rollDice() {
 		}
 		drawRollDiceButton(playerTurn); // draw roll dice button.
 	} else if (dice !== 6) {
-		movePlayers(playerTurn, dice, newX, newY); // move player
+		movePlayers(playerTurn, dice, newX, newY, doubleSix); // move player
 		doubleSix = 0;
 		playerTurn = playerTurn === 1 ? 0 : 1;
 		drawRollDiceButton(playerTurn); // draw roll dice button.
@@ -251,11 +293,17 @@ function drawRollDiceButton(playerTurn) {
 	ctx.fillStyle = '#fff';
 }
 
-function drawTrapMessage(oldTile, spaces, newTile) {
+function drawTrapMessage(oldTile, spaces, newTile, playerTurn) {
 	ctx.font = '16px Arial';
 	ctx.fillStyle = '#000';
-	ctx.fillText(`You hit a trap on tile ${oldTile}.`, 220, 365);
-	ctx.fillText(`You were moved ${spaces} spaces to tile ${newTile}.`, 180, 385);
+	ctx.fillText(`Player ${playerTurn + 1} hit a trap on tile ${oldTile}.`, 210, 365);
+	ctx.fillText(`They were moved ${spaces} spaces to tile ${newTile}.`, 180, 385);
+}
+
+function drawDoubleMessage(playerTurn) {
+	ctx.font = '16px Arial';
+	ctx.fillStyle = '#000';
+	ctx.fillText(`Player ${playerTurn + 1} rolled a 6 and gets another go!`, 165, 365);
 }
 
 function drawDice(dice) {
@@ -269,7 +317,7 @@ function drawDice(dice) {
 function drawCanvas() {
 	canvas.style = 'margin-top:15px;';
 
-	// Reset posY & posX to 0, so canvas will be drawn from 0, 0 again.
+	// Reset posY & posX to 0, so canvas tiles will be drawn from 0, 0 again.
 	posY = 0;
 	posX = 0;
 
@@ -330,24 +378,26 @@ function checkCtx() {
 	}
 }
 
+// Add playing characters to page.
 if (getPlayer1 && getPlayer1Name && getPlayer2 && getPlayer2Name) {
-	// Add playing characters to page.
 	player1.innerHTML += `
 	<div class="character">
-		<div class="card character-card">
-			<div class="card-header character-card--header"><b>Player 1:</b> ${players[0].name}</div>
-			<img src="images/characters/${players[0].id}.jpg" class="mx-auto card-img-top character-card--game-image" alt="...">
+		<div class="card character-card--game">
+			<div class="card-header character-card--header-game"><b>Player 1:</b> ${players[0].name}</div>
+			<img src="images/characters/${players[0].id}.png" class="mx-auto card-img-top character-card--game-image" alt="...">
 		</div>
 	</div>
 `;
 	player2.innerHTML += `
 	<div class="character">
-		<div class="card character-card">
-			<div class="card-header character-card--header"><b>Player 2:</b> ${players[1].name}</div>
-			<img src="images/characters/${players[1].id}.jpg" class="mx-auto card-img-top character-card--game-image" alt="...">
+		<div class="card character-card--game">
+			<div class="card-header character-card--header-game"><b>Player 2:</b> ${players[1].name}</div>
+			<img src="images/characters/${players[1].id}.png" class="mx-auto card-img-top character-card--game-image" alt="...">
 		</div>
 	</div>
 `;
+	player1hr.style.backgroundColor = players[0].color;
+	player2hr.style.backgroundColor = players[1].color;
 
 	checkCtx();
 } else {

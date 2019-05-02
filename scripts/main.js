@@ -6,7 +6,8 @@ let fetchedCharacters = [],
 	key,
 	charName,
 	firstName,
-	player = 0;
+	player = 0,
+	titles = [];
 
 for (let i = 0; i < characters.length; i++) {
 	fetch(API_URL + characters[i])
@@ -16,19 +17,20 @@ for (let i = 0; i < characters.length; i++) {
 			key = json.url.split('/')[5];
 			charName = json.name;
 			firstName = charName.split(' ')[0];
+			titles = json.titles;
 
 			charPick.innerHTML += `
       <div class="col-xl-4 col-md-6 col-xs-12 character">
         <div class="card character-card" id="${key}">
           <div class="card-header character-card--header">${charName}</div>
-          <img src="images/characters/${key}.jpg" class="mx-auto card-img-top character-card--home-image" alt="...">
+          <img src="images/characters/${key}.png" class="mx-auto card-img-top character-card--home-image" alt="...">
           <div class="card-body character-card--body">
             <button type="button" class="btn character-card--body__read-button" data-readBtn="read-${key}">Read More</button>
             <div class="card-body character-card--body__more hide" style="padding:0.75rem" data-info="${key}">
-							<div class="card-text">
-								Name: ${charName}<br/>
-								Gender: ${json.gender}<br/>
-								Born: ${json.born}<br/>
+							<div>
+								<span class="character-card--body__more-title">Gender:</span> <span class="character-card--body__more-text">${json.gender}</span>
+								<span class="character-card--body__more-title">Born:</span> <span class="character-card--body__more-text">${json.born}</span>
+								<span class="character-card--body__more-title">Known as:</span> <span class="character-card--body__more-text">${titles.join(', ')}</span>
               </div>
             </div>
             <button type="button" class="btn character-card--body__choose-button" id="pickBtn" data-charname="${charName}" data-charid="${key}">Choose ${firstName}</button>
@@ -45,23 +47,25 @@ function openHtp() {
 	$('#htpModal').modal('show');
 }
 
-// function getDevice() {
-// 	const isMobile = new RegExp('Android|webOS|iPhone|iPad|BlackBerry|Windows Phone|Opera Mini|IEMobile|Mobile', 'i');
-// 	if (isMobile.test(navigator.userAgent)) {
-// 		return 'touchstart';
-// 	} else {
-// 		return 'click';
-// 	}
-// }
+function getDevice() {
+	const isMobile = new RegExp('Android|webOS|iPhone|iPad|BlackBerry|Windows Phone|Opera Mini|IEMobile|Mobile', 'i');
+	if (isMobile.test(navigator.userAgent)) {
+		return 'touchstart';
+	} else {
+		return 'click';
+	}
+}
 
-window.onload = function() {
+window.addEventListener('load', () => {
+	const btn2 = document.querySelectorAll('#pickBtn');
+
 	for (let i = 0; i < characters.length; i++) {
-		const btn = document.querySelector(`[data-charid="${characters[i]}"]`);
 		const charCard = document.getElementById(`${characters[i]}`);
 		const readMore = document.querySelector(`[data-readBtn="read-${characters[i]}"]`);
+		const allBtns = btn2[i];
 
 		// btn event listener
-		btn.addEventListener('click', () => {
+		allBtns.addEventListener(getDevice(), () => {
 			charCard.classList.toggle('char-selected');
 
 			let playerSelected = document.createElement('h5');
@@ -90,9 +94,10 @@ window.onload = function() {
 		});
 
 		// readMore event listener
-		readMore.addEventListener('click', () => {
+		readMore.addEventListener(getDevice(), () => {
 			const readMoreChar = document.querySelector(`[data-info="${characters[i]}"]`);
 			readMoreChar.classList.toggle('hide');
+			readMore.classList.toggle('read-selected');
 		});
 	}
-};
+});

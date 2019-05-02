@@ -1,0 +1,51 @@
+@import '../utilities/variables';
+@import '../utilities/fonts';
+
+.modal-content {
+	&--btn-game {
+		border-radius: 0;
+		padding: 35px 20px;
+		color: $white;
+		background: $four;
+		border: none;
+		font-size: 18px;
+		&:hover {
+			background: $nine;
+			color: $white;
+		}
+		&:active {
+			background: $nine;
+			color: $white;
+		}
+		&:focus {
+			box-shadow: none;
+		}
+	}
+	&--btn-back {
+		border-radius: 0;
+		padding: 5px 10px;
+		color: $black;
+		background: $white;
+		border: none;
+		font-size: 16px;
+	}
+	.modal-title {
+		font-family: SortsMillGoudy-Regular;
+		font-weight: bold;
+		font-size: 24px;
+		margin-bottom: -5px;
+	}
+	.modal-body {
+		&--title {
+			font-family: SortsMillGoudy-Italic;
+			font-weight: bold;
+			font-size: 20px;
+			margin-bottom: 5px;
+		}
+		&--body {
+			font-family: SortsMillGoudy-Regular;
+			margin-left: 15px;
+			margin-bottom: 30px;
+		}
+	}
+}

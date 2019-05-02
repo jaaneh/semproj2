@@ -1,9 +1,13 @@
 @import 'partials/navbar';
 @import 'partials/character';
 @import 'partials/game';
+@import 'partials/modal';
 
 body {
 	margin: 0;
+	background-image: url('../../images/site/background_faded.png');
+	background-position: center;
+	background-size: cover;
 }
 .row {
 	margin-right: 0 !important;
