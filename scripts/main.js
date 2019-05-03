@@ -9,17 +9,17 @@ let fetchedCharacters = [],
 	player = 0,
 	titles = [];
 
-for (let i = 0; i < characters.length; i++) {
-	fetch(API_URL + characters[i])
-		.then(res => res.json())
-		.then(json => {
-			fetchedCharacters.push(json);
-			key = json.url.split('/')[5];
-			charName = json.name;
-			firstName = charName.split(' ')[0];
-			titles = json.titles;
+async function fetchChars() {
+	for (let i = 0; i < characters.length; i++) {
+		const response = await fetch(API_URL + characters[i]);
+		const json = await response.json();
+		fetchedCharacters.push(json);
+		key = json.url.split('/')[5];
+		charName = json.name;
+		firstName = charName.split(' ')[0];
+		titles = json.titles;
 
-			charPick.innerHTML += `
+		charPick.innerHTML += `
       <div class="col-xl-4 col-md-6 col-xs-12 character">
         <div class="card character-card" id="${key}">
           <div class="card-header character-card--header">${charName}</div>
@@ -37,9 +37,9 @@ for (let i = 0; i < characters.length; i++) {
           </div>
         </div>
       </div>
-      `;
-		})
-		.catch(err => console.error(err));
+    `;
+	}
+	buttonEvents();
 }
 
 // Support modal open on smaller/mobile devices that uses touch screens.
@@ -56,7 +56,7 @@ function getDevice() {
 	}
 }
 
-window.addEventListener('load', () => {
+function buttonEvents() {
 	const btn2 = document.querySelectorAll('#pickBtn');
 
 	for (let i = 0; i < characters.length; i++) {
@@ -100,4 +100,4 @@ window.addEventListener('load', () => {
 			readMore.classList.toggle('read-selected');
 		});
 	}
-});
+}

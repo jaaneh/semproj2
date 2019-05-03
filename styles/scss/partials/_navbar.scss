@@ -1,6 +1,10 @@
 @import '../utilities/variables';
 @import '../utilities/fonts';
 
+.navbar-brand {
+	padding: 0;
+}
+
 .navStyle {
 	min-height: 70px;
 	background-color: #101e26 !important;

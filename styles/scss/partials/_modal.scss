@@ -1,6 +1,10 @@
 @import '../utilities/variables';
 @import '../utilities/fonts';
 
+#goToGameModal {
+	box-shadow: $nav-shadow;
+}
+
 .modal-content {
 	&--btn-game {
 		border-radius: 0;

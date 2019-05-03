@@ -12,6 +12,10 @@
   font-weight: 400;
 }
 
+.navbar-brand {
+  padding: 0;
+}
+
 .navStyle {
   min-height: 70px;
   background-color: #101e26 !important;
@@ -118,7 +122,7 @@
 .character-card--header-game {
   text-align: center;
   font-size: 18px;
-  padding: 8px 0;
+  padding: 10px 0 5px;
   background: #141c2680;
   color: #fff;
   font-family: SortsMillGoudy-Regular;
@@ -269,6 +273,11 @@ hr {
   font-weight: 400;
 }
 
+#goToGameModal {
+  -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+          box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
 .modal-content--btn-game {
   border-radius: 0;
   padding: 35px 20px;
@@ -320,6 +329,52 @@ hr {
   font-family: SortsMillGoudy-Regular;
   margin-left: 15px;
   margin-bottom: 30px;
+}
+
+/* Shadow Variables */
+/* Color Theme Variables */
+@font-face {
+  font-family: SortsMillGoudy-Regular;
+  src: url("../../../fonts/SortsMillGoudy-Regular.ttf");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: SortsMillGoudy-Italic;
+  src: url("../../../fonts/SortsMillGoudy-Italic.ttf");
+  font-weight: 400;
+}
+
+#winner {
+  margin-top: 15px;
+}
+
+.no-winner {
+  display: block;
+}
+
+.no-winner--btn {
+  display: block;
+  border-radius: 0;
+  padding: 5px 20px;
+  color: #fff;
+  background: #141c26;
+  border: none;
+}
+
+.no-winner--btn:hover {
+  background: #28303c;
+  color: #fff;
+}
+
+.no-winner--btn:active {
+  background: #28303c;
+  color: #fff;
+}
+
+.no-winner--btn:focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 body {

@@ -11,8 +11,6 @@
 			- Use these colors for everything from navbar to player tokens. 
 		- New path tile designs.
 		- New trap tile designs.
-	- Game/site logo.
-	- Game/site name.
 	- Image for all 10 characters. (Stick to face & only outlines. Transparent background, 250x250px).
 */
 
@@ -66,7 +64,7 @@ let posX = 0,
 	playerIcon,
 	otherPlayer = 0;
 
-path.onload = function() {
+trap.onload = function() {
 	checkCtx();
 };
 
@@ -230,7 +228,7 @@ function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 function rollDice() {
 	let player = players[playerTurn];
 	const dice = Math.floor(Math.random() * 6) + 1; // dice
-	console.log(`Dice rolled ${dice}`);
+	console.log(`Dice rolled ${dice} - Player ${playerTurn + 1}`);
 	// playAudio();
 
 	// Set newX & newY to 30 if new position + dice is more than 30.

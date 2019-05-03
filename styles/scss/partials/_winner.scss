@@ -1,0 +1,29 @@
+@import '../utilities/variables';
+@import '../utilities/fonts';
+
+#winner {
+	margin-top: 15px;
+}
+
+.no-winner {
+	display: block;
+	&--btn {
+		display: block;
+		border-radius: 0;
+		padding: 5px 20px;
+		color: $white;
+		background: $four;
+		border: none;
+		&:hover {
+			background: $nine;
+			color: $white;
+		}
+		&:active {
+			background: $nine;
+			color: $white;
+		}
+		&:focus {
+			box-shadow: none;
+		}
+	}
+}

@@ -9,12 +9,12 @@
 		<link rel="stylesheet" type="text/css" media="screen" href="styles/css/style.css" />
 	</head>
 
-	<body>
+	<body onload="fetchChars()">
 		<!-- Nav -->
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark navStyle">
 			<div class="container">
 				<a class="navbar-brand" href="index.html">
-					<img src="images/site/logo_wht.png" height="45" class="d-inline-block align-top" alt="" />
+					<img src="images/site/logo_wht.png" height="55" class="d-inline-block align-top" alt="" />
 				</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
@@ -76,7 +76,7 @@
 		<!-- Players selected modal -->
 		<div class="modal fade" id="selectedModal" role="dialog" data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
+				<div class="modal-content" id="goToGameModal">
 					<button type="button" onclick="location.href='/game.html'" class="btn btn-default modal-content--btn-game" data-dismiss="modal">Go to Game!</button>
 					<button type="button" onclick="location.href='/index.html'" class="btn btn-default modal-content--btn-back" data-dismiss="modal">Go back</button>
 				</div>
