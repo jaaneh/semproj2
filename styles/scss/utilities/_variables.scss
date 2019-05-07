@@ -6,6 +6,7 @@ $main-fade: #25252550;
 $main-hover: #333;
 
 $white: #fff;
+$white-two: #eee;
 $black: #000;
 
 /* Shadow Variables */
@@ -15,15 +16,11 @@ $small-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
 $big-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3);
 
 /* Color Theme Variables */
-// Prone to change
-$one: #a6444c;
-$two: #060e26;
-$three: #143259;
-$four: #141c26;
-$four-half: #141c2680;
-$five: #6c7d8c;
-$six: #101e26;
-$seven: #1e3340;
-$eight: #3c6373;
-$nine: #28303c;
-$ten: #b4d2d9;
+$one: #141c26;
+$one-half: #141c2680;
+$two: #1e3340;
+$three: #28303c;
+
+/* Player colors */
+$player1: #a6444c;
+$player2: #222;

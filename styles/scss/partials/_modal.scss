@@ -10,15 +10,15 @@
 		border-radius: 0;
 		padding: 35px 20px;
 		color: $white;
-		background: $four;
+		background: $one;
 		border: none;
 		font-size: 18px;
 		&:hover {
-			background: $nine;
+			background: $three;
 			color: $white;
 		}
 		&:active {
-			background: $nine;
+			background: $three;
 			color: $white;
 		}
 		&:focus {

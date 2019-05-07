@@ -6,7 +6,7 @@
 }
 
 .card {
-	background-color: $four-half;
+	background-color: $one-half;
 }
 
 #charPick {
@@ -15,7 +15,7 @@
 }
 
 .read-selected {
-	background-color: $four !important;
+	background-color: $one !important;
 	box-shadow: $big-shadow;
 }
 
@@ -54,7 +54,7 @@
 			font-size: 20px;
 			padding: 10px 0 5px;
 			margin-bottom: -5px;
-			background: $four-half;
+			background: $one-half;
 			color: $white;
 			font-weight: bold;
 			font-family: SortsMillGoudy-Regular;
@@ -63,7 +63,7 @@
 			text-align: center;
 			font-size: 18px;
 			padding: 10px 0 5px;
-			background: $four-half;
+			background: $one-half;
 			color: $white;
 			font-family: SortsMillGoudy-Regular;
 		}
@@ -80,14 +80,14 @@
 				font-size: 14px;
 			}
 			&__more {
-				background-color: $four-half;
+				background-color: $one-half;
 				color: $white;
 			}
 			&__title {
 				color: #000;
 			}
 			&__read-button {
-				background-color: $four-half;
+				background-color: $one-half;
 				border-color: $main-two;
 				color: $white;
 				padding: 2px 0;
@@ -95,13 +95,13 @@
 				width: 100%;
 				border-radius: 0;
 				&:hover {
-					background-color: $four;
-					border-color: $seven;
+					background-color: $one;
+					border-color: $two;
 					color: $white;
 				}
 				&:active {
-					background-color: $nine !important;
-					border-color: $seven !important;
+					background-color: $three !important;
+					border-color: $two !important;
 					&:focus {
 						box-shadow: $big-shadow !important;
 					}
@@ -114,8 +114,8 @@
 				}
 			}
 			&__choose-button {
-				background-color: $four;
-				border-color: $four-half;
+				background-color: $one;
+				border-color: $one-half;
 				color: $white;
 				padding: 5px 0;
 				display: block;
@@ -123,13 +123,13 @@
 				border-radius: 0;
 				transition: box-shadow 0.2s ease;
 				&:hover {
-					background-color: $four;
-					border-color: $four-half;
+					background-color: $one;
+					border-color: $one-half;
 					box-shadow: $small-shadow;
 					color: $white;
 				}
 				&:active {
-					background-color: $nine !important;
+					background-color: $three !important;
 					border-color: $main-two !important;
 					&:focus {
 						box-shadow: $big-shadow !important;

@@ -1,29 +1,94 @@
 @import '../utilities/variables';
 @import '../utilities/fonts';
 
-#winner {
-	margin-top: 15px;
+.body-animation {
+	width: 100%;
+	height: 100%;
+	background-image: linear-gradient(90deg, $one 50%, #161e29 50%);
+	background-color: rgb(39, 40, 41);
+	background-size: 60px 100%;
+	animation: sliding 60s linear infinite;
 }
 
-.no-winner {
-	display: block;
-	&--btn {
-		display: block;
-		border-radius: 0;
-		padding: 5px 20px;
-		color: $white;
-		background: $four;
-		border: none;
-		&:hover {
-			background: $nine;
-			color: $white;
+@keyframes sliding {
+	100% {
+		background-position: 100% 100%;
+	}
+}
+
+#winnerWrapper {
+	color: $white;
+	margin-top: 15px;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	.winner {
+		> h2 {
+			font-size: 36px;
 		}
-		&:active {
-			background: $nine;
-			color: $white;
+		> p {
+			color: $white-two;
+			font-size: 16px;
 		}
-		&:focus {
-			box-shadow: none;
+		&--image {
+			max-width: 250px;
+		}
+		&--name {
+			font-size: 36px;
+		}
+		&--btn {
+			border-radius: 4px;
+			padding: 10px 25px;
+			color: $black;
+			font-weight: bold;
+			background: $white;
+			border: none;
+			transition: all 0.2s ease;
+			&:hover {
+				background: $white-two;
+				color: $black;
+				box-shadow: $big-shadow;
+			}
+			&:active {
+				background: $white-two;
+				color: $black;
+				box-shadow: $small-shadow;
+			}
+			&:focus {
+				box-shadow: none;
+			}
+		}
+	}
+	.no-winner {
+		margin-top: 50px;
+		> h2 {
+			font-size: 36px;
+		}
+		> p {
+			color: $white-two;
+			font-size: 16px;
+		}
+		&--btn {
+			border-radius: 4px;
+			padding: 10px 25px;
+			color: $black;
+			font-weight: bold;
+			background: $white;
+			border: none;
+			transition: all 0.2s ease;
+			&:hover {
+				background: $white-two;
+				color: $black;
+				box-shadow: $big-shadow;
+			}
+			&:active {
+				background: $white-two;
+				color: $black;
+				box-shadow: $small-shadow;
+			}
+			&:focus {
+				box-shadow: none;
+			}
 		}
 	}
 }

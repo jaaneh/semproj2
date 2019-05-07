@@ -1,8 +1,6 @@
 /*
 	Bugs/Missing:
-	- Fix token drawing on trap hits. (wrong opposite player location saved?)
 	- No double if trap is hit by a 6 dice roll. (?)
-	- Disable dice button once a player is on tile 30.
 	- Winner page
 
 	Needs done:
@@ -33,7 +31,7 @@ const canvas = document.getElementById('gameCanvas'),
 		{
 			id: getPlayer1,
 			name: getPlayer1Name,
-			color: '#111',
+			color: '#a6444c',
 			pos: 0,
 			locX: 0,
 			locY: 0
@@ -41,7 +39,7 @@ const canvas = document.getElementById('gameCanvas'),
 		{
 			id: getPlayer2,
 			name: getPlayer2Name,
-			color: '#888',
+			color: '#222',
 			pos: 0,
 			locX: 0,
 			locY: 0
@@ -94,17 +92,20 @@ function getMousePos(canvas, e) {
 }
 
 function announceWinner(playerTurn) {
+	// clear sessionStorage.
+	sessionStorage.clear();
 	/* 
 	Instead of adding player name, id, etc. seperately to sessionStorage, we can 
 	add the whole object. We'll have to wrap it in JSON.stringify(), then we'll 
 	use JSON.parse() when getting the player again in the winner.js file.
 	*/
 	sessionStorage.setItem('winner', JSON.stringify(players[playerTurn]));
+	canvas.removeEventListener('click', canvasDiceEvt, false);
 
 	// Redirect to winners page
 	setTimeout(() => {
 		location.href = '/winner.html';
-	}, 2000);
+	}, 1500);
 }
 
 function playAudio() {
@@ -120,14 +121,17 @@ function checkOnButton(pos, button) {
 function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 	let player = players[playerTurn];
 
-	otherPlayer = playerTurn == 1 ? 0 : 1;
-	let oPlayer = players[otherPlayer];
+	otherPlayer = playerTurn === 0 ? 1 : 0;
 
 	// Clear rect using old location.
 	drawCanvas();
 	if (players[otherPlayer].locX || players[otherPlayer].locY) {
 		ctx.fillStyle = players[otherPlayer].color;
-		ctx.fillRect(oPlayer.locX, oPlayer.locY, 35, 35);
+		if (playerTurn === 0) {
+			ctx.fillRect(tilePos[players[1].pos].x + 18, tilePos[players[1].pos].y + 18, 35, 35);
+		} else {
+			ctx.fillRect(tilePos[players[0].pos].x + 8, tilePos[players[0].pos].y + 8, 35, 35);
+		}
 	}
 
 	// Save new location to players array.
@@ -142,8 +146,6 @@ function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 		player.pos = player.pos + dice;
 	}
 
-	// Set color to current player
-
 	// Check if player lands on a trap tile.
 	if (trapArray.includes(player.pos)) {
 		switch (player.pos) {
@@ -152,13 +154,13 @@ function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 			player.pos = 4;
 			ctx.fillStyle = players[playerTurn].color;
 			if (playerTurn === 0) {
-				ctx.fillRect(201 + 5, 0 + 5, 35, 35);
-				player.locX = 201 + 5;
-				player.locY = 0 + 5;
+				player.locX = 201 + 8;
+				player.locY = 0 + 8;
+				ctx.fillRect(201 + 8, 0 + 8, 35, 35);
 			} else {
-				player.locX = 201 + 15;
-				player.locY = 0 + 15;
-				ctx.fillRect(201 + 15, 0 + 15, 35, 35);
+				player.locX = 201 + 18;
+				player.locY = 0 + 18;
+				ctx.fillRect(201 + 18, 0 + 18, 35, 35);
 			}
 			break;
 		case 11:
@@ -166,13 +168,13 @@ function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 			player.pos = 8;
 			ctx.fillStyle = players[playerTurn].color;
 			if (playerTurn === 0) {
-				player.locX = 469 + 5;
-				player.locY = 0 + 5;
-				ctx.fillRect(469 + 5, 0 + 5, 35, 35);
+				player.locX = 469 + 8;
+				player.locY = 0 + 8;
+				ctx.fillRect(469 + 8, 0 + 8, 35, 35);
 			} else {
-				player.locX = 469 + 15;
-				player.locY = 0 + 15;
-				ctx.fillRect(469 + 15, 0 + 15, 35, 35);
+				player.locX = 469 + 18;
+				player.locY = 0 + 18;
+				ctx.fillRect(469 + 18, 0 + 18, 35, 35);
 			}
 			break;
 		case 16:
@@ -180,13 +182,13 @@ function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 			player.pos = 14;
 			ctx.fillStyle = players[playerTurn].color;
 			if (playerTurn === 0) {
-				player.locX = 536 + 5;
-				player.locY = 335 + 5;
-				ctx.fillRect(536 + 5, 335 + 5, 35, 35);
+				player.locX = 536 + 8;
+				player.locY = 335 + 8;
+				ctx.fillRect(536 + 8, 335 + 8, 35, 35);
 			} else {
-				player.locX = 536 + 15;
-				player.locY = 335 + 15;
-				ctx.fillRect(536 + 15, 335 + 15, 35, 35);
+				player.locX = 536 + 18;
+				player.locY = 335 + 18;
+				ctx.fillRect(536 + 18, 335 + 18, 35, 35);
 			}
 			break;
 		case 21:
@@ -194,13 +196,13 @@ function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 			player.pos = 18;
 			ctx.fillStyle = players[playerTurn].color;
 			if (playerTurn === 0) {
-				player.locX = 402 + 5;
-				player.locY = 469 + 5;
-				ctx.fillRect(402 + 5, 469 + 5, 35, 35);
+				player.locX = 402 + 8;
+				player.locY = 469 + 8;
+				ctx.fillRect(402 + 8, 469 + 8, 35, 35);
 			} else {
-				player.locX = 402 + 15;
-				player.locY = 469 + 15;
-				ctx.fillRect(402 + 15, 469 + 15, 35, 35);
+				player.locX = 402 + 18;
+				player.locY = 469 + 18;
+				ctx.fillRect(402 + 18, 469 + 18, 35, 35);
 			}
 			break;
 		case 27:
@@ -208,13 +210,13 @@ function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 			player.pos = 23;
 			ctx.fillStyle = players[playerTurn].color;
 			if (playerTurn === 0) {
-				player.locX = 0 + 5;
-				player.locY = 268 + 5;
-				ctx.fillRect(67 + 5, 469 + 5, 35, 35);
+				player.locX = 0 + 8;
+				player.locY = 268 + 8;
+				ctx.fillRect(67 + 8, 469 + 8, 35, 35);
 			} else {
-				player.locX = 0 + 15;
-				player.locY = 268 + 15;
-				ctx.fillRect(67 + 15, 469 + 15, 35, 35);
+				player.locX = 0 + 18;
+				player.locY = 268 + 18;
+				ctx.fillRect(67 + 18, 469 + 18, 35, 35);
 			}
 			break;
 		}
@@ -228,26 +230,26 @@ function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 function rollDice() {
 	let player = players[playerTurn];
 	const dice = Math.floor(Math.random() * 6) + 1; // dice
-	console.log(`Dice rolled ${dice} - Player ${playerTurn + 1}`);
-	// playAudio();
+	console.log(`Dice rolled ${dice}`);
+	playAudio();
 
 	// Set newX & newY to 30 if new position + dice is more than 30.
 	if (player.pos + dice >= 30) {
 		if (playerTurn === 0) {
-			newX = tilePos[30].x + 5;
-			newY = tilePos[30].y + 5;
+			newX = tilePos[30].x + 8;
+			newY = tilePos[30].y + 8;
 		} else {
-			newX = tilePos[30].x + 15;
-			newY = tilePos[30].y + 15;
+			newX = tilePos[30].x + 18;
+			newY = tilePos[30].y + 18;
 		}
 		player.pos = 30;
 	} else {
 		if (playerTurn === 0) {
-			newX = tilePos[player.pos + dice].x + 5;
-			newY = tilePos[player.pos + dice].y + 5;
+			newX = tilePos[player.pos + dice].x + 8;
+			newY = tilePos[player.pos + dice].y + 8;
 		} else {
-			newX = tilePos[player.pos + dice].x + 15;
-			newY = tilePos[player.pos + dice].y + 15;
+			newX = tilePos[player.pos + dice].x + 18;
+			newY = tilePos[player.pos + dice].y + 18;
 		}
 	}
 	if (dice === 6) {
@@ -273,35 +275,35 @@ function rollDice() {
 function drawRollDiceButton(playerTurn) {
 	let buttonBgColor = players[playerTurn].color;
 	let fontColor;
-	fontColor = playerTurn === 0 ? '#fff' : '#000';
+	fontColor = playerTurn === 0 ? '#fff' : '#fff'; // change font color to match player color.
 
 	ctx.clearRect(200, 150, 200, 80); // clear current button
 	ctx.beginPath();
 	ctx.rect(200, 150, 200, 80);
 	ctx.fillStyle = buttonBgColor;
 	ctx.fill();
-	ctx.lineWidth = 1;
+	ctx.lineWidth = 0.7;
 	ctx.strokeStyle = '#000';
 	ctx.stroke();
 	ctx.closePath();
-	ctx.font = '20px Arial';
+	ctx.font = '24px SortsMillGoudy-Regular';
 	ctx.fillStyle = fontColor;
 	ctx.fillText(`Player ${playerTurn + 1}`, 265, 185);
-	ctx.fillText('Roll Dice', 260, 210);
+	ctx.fillText('Roll Dice', 255, 212);
 	ctx.fillStyle = '#fff';
 }
 
 function drawTrapMessage(oldTile, spaces, newTile, playerTurn) {
-	ctx.font = '16px Arial';
+	ctx.font = '18px SortsMillGoudy-Regular';
 	ctx.fillStyle = '#000';
 	ctx.fillText(`Player ${playerTurn + 1} hit a trap on tile ${oldTile}.`, 210, 365);
-	ctx.fillText(`They were moved ${spaces} spaces to tile ${newTile}.`, 180, 385);
+	ctx.fillText(`You were moved ${spaces} spaces to tile ${newTile}.`, 178, 385);
 }
 
 function drawDoubleMessage(playerTurn) {
-	ctx.font = '16px Arial';
+	ctx.font = '18px SortsMillGoudy-Regular';
 	ctx.fillStyle = '#000';
-	ctx.fillText(`Player ${playerTurn + 1} rolled a 6 and gets another go!`, 165, 365);
+	ctx.fillText(`Player ${playerTurn + 1} rolled a 6 and gets another go!`, 170, 365);
 }
 
 function drawDice(dice) {
@@ -355,16 +357,16 @@ function drawCanvas() {
 }
 
 // event listener for dice event
-canvas.addEventListener(
-	'click',
-	e => {
-		const mousePos = getMousePos(canvas, e);
-		if (checkOnButton(mousePos, rollDiceButton)) {
-			rollDice();
-		}
-	},
-	false
-);
+
+const canvasDiceEvt = function(e) {
+	e.preventDefault();
+	const mousePos = getMousePos(canvas, e);
+	if (checkOnButton(mousePos, rollDiceButton)) {
+		rollDice();
+	}
+};
+
+canvas.addEventListener('click', canvasDiceEvt, false);
 
 function checkCtx() {
 	if (!ctx) {

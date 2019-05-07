@@ -6,17 +6,23 @@ use JSON.parse() to get the item again.
 We're saving the whole object to a variable for easy access throughout the page.
 */
 const winner = JSON.parse(sessionStorage.getItem('winner'));
-const winnerEl = document.getElementById('winner');
+const winnerWrapper = document.getElementById('winnerWrapper');
 
 if (!winner) {
-	winnerEl.innerHTML = `
-		<h2>No winner found.</h2>
-
+	winnerWrapper.innerHTML = `
 		<div class="no-winner">
-			<p>Did you play the game?</p>
+			<h2>No winner found.</h2>
+			<p>Looks like you didn't play the game.</p>
 			<button type="button" onclick="location.href='/index.html'" class="btn btn-default no-winner--btn">Go play <i class="far fa-chevron-right fa-xs"></i></button>
 		</div>
 	`;
 } else {
-	winnerEl.innerHTML = `${winner.name} (${winner.id})`;
+	winnerWrapper.innerHTML = `
+	<div class="winner">
+		<img src="images/characters/${winner.id}.png" class="mx-auto card-img-top winner--image" alt="...">
+		<h2 class="winner--name">${winner.name}</h2>
+		<p>You reached the end of the game.</br>Congratulations!</p>
+		<button type="button" onclick="location.href='/index.html'" class="btn btn-default winner--btn">Play again <i class="far fa-chevron-right fa-xs"></i></button>
+	</div>	
+	`;
 }
