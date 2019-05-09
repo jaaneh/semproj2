@@ -91,6 +91,15 @@ function getMousePos(canvas, e) {
 	};
 }
 
+function getDevice() {
+	const isMobile = new RegExp('Android|webOS|iPhone|iPad|BlackBerry|Windows Phone|Opera Mini|IEMobile|Mobile', 'i');
+	if (isMobile.test(navigator.userAgent)) {
+		return 'touchstart';
+	} else {
+		return 'click';
+	}
+}
+
 function announceWinner(playerTurn) {
 	// clear sessionStorage.
 	sessionStorage.clear();
@@ -366,7 +375,7 @@ const canvasDiceEvt = function(e) {
 	}
 };
 
-canvas.addEventListener('click', canvasDiceEvt, false);
+canvas.addEventListener(getDevice(), canvasDiceEvt, false);
 
 function checkCtx() {
 	if (!ctx) {
