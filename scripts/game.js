@@ -27,6 +27,7 @@ const canvas = document.getElementById('gameCanvas'),
 	audio = new Audio('sounds/rolldice.mp3'),
 	path = new Image(),
 	trap = new Image(),
+	final = new Image(),
 	players = [
 		{
 			id: getPlayer1,
@@ -66,8 +67,9 @@ trap.onload = function() {
 	checkCtx();
 };
 
-// Set images for the path, trap, player1 token, & player2 token.
+// Set images for the path and traps,
 path.src = 'images/board/icon_new.png';
+final.src = 'images/board/final.png';
 trap.src = 'images/board/trap_new.png';
 
 // Fetch tile positions.
@@ -349,6 +351,8 @@ function drawCanvas() {
 			if (gameArray[i][j] >= 1) {
 				if (trapArray.includes(gameArray[i][j])) {
 					ctx.drawImage(trap, posX, posY, 62, 62);
+				} else if (gameArray[i][j] === 30) {
+					ctx.drawImage(final, posX, posY, 62, 62);
 				} else {
 					ctx.drawImage(path, posX, posY, 62, 62);
 				}
