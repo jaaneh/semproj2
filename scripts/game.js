@@ -67,8 +67,8 @@ trap.onload = function() {
 };
 
 // Set images for the path, trap, player1 token, & player2 token.
-path.src = 'images/board/icon.png';
-trap.src = 'images/board/trap.png';
+path.src = 'images/board/icon_new.png';
+trap.src = 'images/board/trap_new.png';
 
 // Fetch tile positions.
 fetch('../tilePositions.json')
@@ -354,14 +354,15 @@ function drawCanvas() {
 				}
 				tileNum = gameArray[i][j];
 				ctx.font = '18px Arial';
-				ctx.fillText(tileNum, posX + 23, posY + 37, 62, 62);
+				ctx.textAlign = 'center'; // center numbers for tiles
+				ctx.fillText(tileNum, posX + 31, posY + 36, 62, 62);
+				ctx.textAlign = 'start'; // reset to default.
 			}
 			posX += 67;
 		}
 		posX = 0;
 		posY += 67;
 	}
-
 	drawRollDiceButton(playerTurn);
 }
 
