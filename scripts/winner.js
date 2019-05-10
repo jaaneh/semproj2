@@ -13,7 +13,7 @@ if (!winner) {
 		<div class="no-winner">
 			<h2>No winner found.</h2>
 			<p>Looks like you didn't play the game.</p>
-			<button type="button" onclick="location.href='/index.html'" class="btn btn-default no-winner--btn">Go play <i class="far fa-chevron-right fa-xs"></i></button>
+			<button type="button" onclick="redirectPlayer()" class="btn btn-default no-winner--btn">Go play <i class="far fa-chevron-right fa-xs"></i></button>
 		</div>
 	`;
 } else {
@@ -22,7 +22,12 @@ if (!winner) {
 		<img src="images/characters/${winner.id}.png" class="mx-auto card-img-top winner--image" alt="...">
 		<h2 class="winner--name">${winner.name}</h2>
 		<p>You reached the end of the game.</br>Congratulations!</p>
-		<button type="button" onclick="location.href='/index.html'" class="btn btn-default winner--btn">Play again <i class="far fa-chevron-right fa-xs"></i></button>
+		<button type="button" onclick="redirectPlayer()" class="btn btn-default winner--btn">Play again <i class="far fa-chevron-right fa-xs"></i></button>
 	</div>	
 	`;
+}
+
+function redirectPlayer() {
+	sessionStorage.clear(); // clear sessionStorage.
+	location.href = '/index.html'; // redirect to index.
 }
