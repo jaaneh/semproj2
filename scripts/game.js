@@ -25,6 +25,8 @@ const canvas = document.getElementById('gameCanvas'),
 	getPlayer2Name = sessionStorage.getItem('Player2_Name'),
 	rollDiceButton = { x: 200, y: 150, width: 200, heigth: 80 },
 	audio = new Audio('sounds/rolldice.mp3'),
+	p1 = new Image(),
+	p2 = new Image(),
 	path = new Image(),
 	trap = new Image(),
 	final = new Image(),
@@ -40,7 +42,7 @@ const canvas = document.getElementById('gameCanvas'),
 		{
 			id: getPlayer2,
 			name: getPlayer2Name,
-			color: '#222',
+			color: '#8096c4',
 			pos: 0,
 			locX: 0,
 			locY: 0
@@ -68,9 +70,11 @@ trap.onload = function() {
 };
 
 // Set images for the path and traps,
-path.src = 'images/board/icon_new.png';
+p1.src = 'images/board/player1.png';
+p2.src = 'images/board/player2.png';
+path.src = 'images/board/icon.png';
 final.src = 'images/board/final.png';
-trap.src = 'images/board/trap_new.png';
+trap.src = 'images/board/trap.png';
 
 // Fetch tile positions.
 fetch('../tilePositions.json')
@@ -139,9 +143,11 @@ function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 	if (players[otherPlayer].locX || players[otherPlayer].locY) {
 		ctx.fillStyle = players[otherPlayer].color;
 		if (playerTurn === 0) {
-			ctx.fillRect(tilePos[players[1].pos].x + 18, tilePos[players[1].pos].y + 18, 35, 35);
+			ctx.drawImage(p2, tilePos[players[1].pos].x + 18, tilePos[players[1].pos].y + 18, 35, 35);
+			//ctx.fillRect(tilePos[players[1].pos].x + 18, tilePos[players[1].pos].y + 18, 35, 35);
 		} else {
-			ctx.fillRect(tilePos[players[0].pos].x + 8, tilePos[players[0].pos].y + 8, 35, 35);
+			ctx.drawImage(p1, tilePos[players[0].pos].x + 8, tilePos[players[0].pos].y + 8, 35, 35);
+			//ctx.fillRect(tilePos[players[0].pos].x + 8, tilePos[players[0].pos].y + 8, 35, 35);
 		}
 	}
 
@@ -167,11 +173,13 @@ function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 			if (playerTurn === 0) {
 				player.locX = 201 + 8;
 				player.locY = 0 + 8;
-				ctx.fillRect(201 + 8, 0 + 8, 35, 35);
+				ctx.drawImage(p1, 201 + 8, 0 + 8, 35, 35);
+				//ctx.fillRect(201 + 8, 0 + 8, 35, 35);
 			} else {
 				player.locX = 201 + 18;
 				player.locY = 0 + 18;
-				ctx.fillRect(201 + 18, 0 + 18, 35, 35);
+				ctx.drawImage(p2, 201 + 18, 0 + 18, 35, 35);
+				//ctx.fillRect(201 + 18, 0 + 18, 35, 35);
 			}
 			break;
 		case 11:
@@ -181,11 +189,13 @@ function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 			if (playerTurn === 0) {
 				player.locX = 469 + 8;
 				player.locY = 0 + 8;
-				ctx.fillRect(469 + 8, 0 + 8, 35, 35);
+				ctx.drawImage(p1, 469 + 8, 0 + 8, 35, 35);
+				//ctx.fillRect(469 + 8, 0 + 8, 35, 35);
 			} else {
 				player.locX = 469 + 18;
 				player.locY = 0 + 18;
-				ctx.fillRect(469 + 18, 0 + 18, 35, 35);
+				ctx.drawImage(p2, 469 + 18, 0 + 18, 35, 35);
+				//ctx.fillRect(469 + 18, 0 + 18, 35, 35);
 			}
 			break;
 		case 16:
@@ -195,11 +205,13 @@ function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 			if (playerTurn === 0) {
 				player.locX = 536 + 8;
 				player.locY = 335 + 8;
-				ctx.fillRect(536 + 8, 335 + 8, 35, 35);
+				ctx.drawImage(p1, 536 + 8, 335 + 8, 35, 35);
+				//ctx.fillRect(536 + 8, 335 + 8, 35, 35);
 			} else {
 				player.locX = 536 + 18;
 				player.locY = 335 + 18;
-				ctx.fillRect(536 + 18, 335 + 18, 35, 35);
+				ctx.drawImage(p2, 536 + 18, 335 + 18, 35, 35);
+				//ctx.fillRect(536 + 18, 335 + 18, 35, 35);
 			}
 			break;
 		case 21:
@@ -209,11 +221,13 @@ function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 			if (playerTurn === 0) {
 				player.locX = 402 + 8;
 				player.locY = 469 + 8;
-				ctx.fillRect(402 + 8, 469 + 8, 35, 35);
+				ctx.drawImage(p1, 402 + 8, 469 + 8, 35, 35);
+				//ctx.fillRect(402 + 8, 469 + 8, 35, 35);
 			} else {
 				player.locX = 402 + 18;
 				player.locY = 469 + 18;
-				ctx.fillRect(402 + 18, 469 + 18, 35, 35);
+				ctx.drawImage(p2, 402 + 18, 469 + 18, 35, 35);
+				//ctx.fillRect(402 + 18, 469 + 18, 35, 35);
 			}
 			break;
 		case 27:
@@ -223,18 +237,25 @@ function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 			if (playerTurn === 0) {
 				player.locX = 0 + 8;
 				player.locY = 268 + 8;
-				ctx.fillRect(67 + 8, 469 + 8, 35, 35);
+				ctx.drawImage(p1, 67 + 8, 469 + 8, 35, 35);
+				//ctx.fillRect(67 + 8, 469 + 8, 35, 35);
 			} else {
 				player.locX = 0 + 18;
 				player.locY = 268 + 18;
-				ctx.fillRect(67 + 18, 469 + 18, 35, 35);
+				ctx.drawImage(p2, 67 + 18, 469 + 18, 35, 35);
+				//ctx.fillRect(67 + 18, 469 + 18, 35, 35);
 			}
 			break;
 		}
 	} else {
 		if (dice === 6 && player.pos < 30 && doubleSix !== 2) drawDoubleMessage(playerTurn); // draw double 6 text.
 		ctx.fillStyle = players[playerTurn].color;
-		ctx.fillRect(newX, newY, 35, 35);
+		if (playerTurn === 0) {
+			ctx.drawImage(p1, newX, newY, 35, 35);
+		} else {
+			ctx.drawImage(p2, newX, newY, 35, 35);
+		}
+		//ctx.fillRect(newX, newY, 35, 35);
 	}
 }
 
@@ -357,7 +378,7 @@ function drawCanvas() {
 					ctx.drawImage(path, posX, posY, 62, 62);
 				}
 				tileNum = gameArray[i][j];
-				ctx.font = '18px Arial';
+				ctx.font = '20px Arial';
 				ctx.textAlign = 'center'; // center numbers for tiles
 				ctx.fillText(tileNum, posX + 31, posY + 36, 62, 62);
 				ctx.textAlign = 'start'; // reset to default.
