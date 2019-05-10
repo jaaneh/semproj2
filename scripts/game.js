@@ -314,7 +314,7 @@ function drawRollDiceButton(playerTurn) {
 	ctx.rect(200, 150, 200, 80);
 	ctx.fillStyle = buttonBgColor;
 	ctx.fill();
-	ctx.lineWidth = 0.7;
+	ctx.lineWidth = 0.5;
 	ctx.strokeStyle = '#000';
 	ctx.stroke();
 	ctx.closePath();
@@ -329,7 +329,7 @@ function drawTrapMessage(oldTile, spaces, newTile, playerTurn) {
 	ctx.font = '18px SortsMillGoudy-Regular';
 	ctx.fillStyle = '#000';
 	ctx.fillText(`Player ${playerTurn + 1} hit a trap on tile ${oldTile}.`, 210, 365);
-	ctx.fillText(`You were moved ${spaces} spaces to tile ${newTile}.`, 178, 385);
+	ctx.fillText(`They were moved ${spaces} spaces to tile ${newTile}.`, 176, 385);
 }
 
 function drawDoubleMessage(playerTurn) {
@@ -378,9 +378,9 @@ function drawCanvas() {
 					ctx.drawImage(path, posX, posY, 62, 62);
 				}
 				tileNum = gameArray[i][j];
-				ctx.font = '20px Arial';
+				ctx.font = '24px SortsMillGoudy-Regular';
 				ctx.textAlign = 'center'; // center numbers for tiles
-				ctx.fillText(tileNum, posX + 31, posY + 36, 62, 62);
+				ctx.fillText(tileNum, posX + 31, posY + 35, 62, 62);
 				ctx.textAlign = 'start'; // reset to default.
 			}
 			posX += 67;
