@@ -10,11 +10,11 @@
 		<meta property="og:title" content="Just Snakes – A Game of Thrones Board Game." />
 		<meta property="og:url" content="https://noroff.jaany.xyz/semproj2/game.html" />
 		<meta property="og:type" content="website" />
-		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-		<link rel="manifest" href="/site.webmanifest">
-		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+		<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+		<link rel="manifest" href="site.webmanifest">
+		<link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
 		<meta name="msapplication-TileColor" content="#141c26">
 		<meta name="theme-color" content="#141c26">
 		<title>Game - Just Snakes - A Game of Thrones Board Game</title>
@@ -71,40 +71,45 @@
 
 		<!-- How to Play modal-->
 		<div class="modal fade" id="htpModal" role="dialog">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
 							<h5 class="modal-title">How to play Just Snakes</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<p class="modal-body--title">Basic Information</p>
-							<p class="modal-body--body">
-								As this game is meant for 2 players, you'll start with selecting your characters. When the 2 players have been selected, you'll be promted to go to the game.</br></br>
-								The board has a total of 30 tiles, first to reach tile 30, wins!
-							</p>
-							<p class="modal-body--title">Trap Tiles</p>
-							<p class="modal-body--body">
-								The board consists of 30 tiles total, but be careful! If you happen to get unlucky and land on any of the 5 trap tiles, you will be moved back 2-4 tiles depending on the trap.
-							</p>
-							<p class="modal-body--title">Throwing Sixes</p>
-							<p class="modal-body--body" style="margin-bottom: 10px">
-								When a player throws a six on the dice, that player will get an extra throw.
-								If a player throws 2 sixes, they will move 12 tiles (if they didn't hit a trap), and the next player will get their turn.</br></br>
-		
-								With some luck, JustSnakes games can be over very quickly, so you better hope you roll some sixes.</br></br>
-		
-								A player can maximum have 2 throws, then the game will allow the next player to have their turn.
-								</p>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						</div>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p class="modal-body--title">Basic Information</p>
+						<p class="modal-body--body">
+							As this game is meant for 2 players, you'll start with selecting your characters. When the 2 players have been selected, you'll be promted to go to the game.</br></br>
+							The board has a total of 30 tiles, first to reach tile 30, wins!
+							<span class="d-block mt-1">
+								<img src="images/board/icon.png" width="50" alt="...">
+								<img src="images/board/final.png" width="50" alt="...">
+							</span>
+						</p>
+						<p class="modal-body--title">Trap Tiles</p>
+						<p class="modal-body--body">
+							The board consists of 30 tiles total, but be careful! If you happen to get unlucky and land on any of the 5 trap tiles, you will be moved back 2-4 tiles depending on the trap.
+							<img src="images/board/trap.png" class="d-block mt-1" width="50" alt="...">
+						</p>
+						<p class="modal-body--title">Throwing Sixes</p>
+						<p class="modal-body--body" style="margin-bottom: 10px">
+							When a player throws a six on the dice, that player will get an extra throw.
+							If a player throws 2 sixes, they will move 12 tiles (if they didn't hit a trap), and the next player will get their turn.</br></br>
+
+							With some luck, JustSnakes games can be over very quickly, so you better hope you roll some sixes.</br></br>
+
+							A player can maximum have 2 throws, then the game will allow the next player to have their turn.
+						</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>
+		</div>
 
 		<div class="modal fade" id="missingPlayers" role="dialog" data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog">
@@ -116,7 +121,7 @@
 						</p>
 					</div>
 					<div class="modal-footer">
-						<button type="button" onclick="location.href='/index.html'" class="btn btn-default" data-dismiss="modal">Go back</button>
+						<button type="button" onclick="location.href='index.html'" class="btn btn-default" data-dismiss="modal">Go back</button>
 					</div>
 				</div>
 			</div>

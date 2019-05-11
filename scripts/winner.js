@@ -29,5 +29,5 @@ if (!winner) {
 
 function redirectPlayer() {
 	sessionStorage.clear(); // clear sessionStorage.
-	location.href = '/index.html'; // redirect to index.
+	location.href = 'index.html'; // redirect to index.
 }

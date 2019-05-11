@@ -1,17 +1,3 @@
-/*
-	Bugs/Missing:
-	- No double if trap is hit by a 6 dice roll. (?)
-	- Winner page
-
-	Needs done:
-	- New page design.
-		- Find a color scheme.
-			- Use these colors for everything from navbar to player tokens. 
-		- New path tile designs.
-		- New trap tile designs.
-	- Image for all 10 characters. (Stick to face & only outlines. Transparent background, 250x250px).
-*/
-
 // const declarations.
 const canvas = document.getElementById('gameCanvas'),
 	ctx = canvas.getContext('2d'),
@@ -65,7 +51,7 @@ let posX = 0,
 	playerIcon,
 	otherPlayer = 0;
 
-trap.onload = function() {
+path.onload = function() {
 	checkCtx();
 };
 
@@ -77,7 +63,7 @@ final.src = 'images/board/final.png';
 trap.src = 'images/board/trap.png';
 
 // Fetch tile positions.
-fetch('../tilePositions.json')
+fetch('./tilePositions.json')
 	.then(res => res.json())
 	.then(json => {
 		tilePos = json;
@@ -174,12 +160,10 @@ function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 				player.locX = 201 + 8;
 				player.locY = 0 + 8;
 				ctx.drawImage(p1, 201 + 8, 0 + 8, 35, 35);
-				//ctx.fillRect(201 + 8, 0 + 8, 35, 35);
 			} else {
 				player.locX = 201 + 18;
 				player.locY = 0 + 18;
 				ctx.drawImage(p2, 201 + 18, 0 + 18, 35, 35);
-				//ctx.fillRect(201 + 18, 0 + 18, 35, 35);
 			}
 			break;
 		case 11:
@@ -190,12 +174,10 @@ function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 				player.locX = 469 + 8;
 				player.locY = 0 + 8;
 				ctx.drawImage(p1, 469 + 8, 0 + 8, 35, 35);
-				//ctx.fillRect(469 + 8, 0 + 8, 35, 35);
 			} else {
 				player.locX = 469 + 18;
 				player.locY = 0 + 18;
 				ctx.drawImage(p2, 469 + 18, 0 + 18, 35, 35);
-				//ctx.fillRect(469 + 18, 0 + 18, 35, 35);
 			}
 			break;
 		case 16:
@@ -206,12 +188,10 @@ function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 				player.locX = 536 + 8;
 				player.locY = 335 + 8;
 				ctx.drawImage(p1, 536 + 8, 335 + 8, 35, 35);
-				//ctx.fillRect(536 + 8, 335 + 8, 35, 35);
 			} else {
 				player.locX = 536 + 18;
 				player.locY = 335 + 18;
 				ctx.drawImage(p2, 536 + 18, 335 + 18, 35, 35);
-				//ctx.fillRect(536 + 18, 335 + 18, 35, 35);
 			}
 			break;
 		case 21:
@@ -222,12 +202,10 @@ function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 				player.locX = 402 + 8;
 				player.locY = 469 + 8;
 				ctx.drawImage(p1, 402 + 8, 469 + 8, 35, 35);
-				//ctx.fillRect(402 + 8, 469 + 8, 35, 35);
 			} else {
 				player.locX = 402 + 18;
 				player.locY = 469 + 18;
 				ctx.drawImage(p2, 402 + 18, 469 + 18, 35, 35);
-				//ctx.fillRect(402 + 18, 469 + 18, 35, 35);
 			}
 			break;
 		case 27:
@@ -238,24 +216,20 @@ function movePlayers(playerTurn, dice, newX, newY, doubleSix) {
 				player.locX = 0 + 8;
 				player.locY = 268 + 8;
 				ctx.drawImage(p1, 67 + 8, 469 + 8, 35, 35);
-				//ctx.fillRect(67 + 8, 469 + 8, 35, 35);
 			} else {
 				player.locX = 0 + 18;
 				player.locY = 268 + 18;
 				ctx.drawImage(p2, 67 + 18, 469 + 18, 35, 35);
-				//ctx.fillRect(67 + 18, 469 + 18, 35, 35);
 			}
 			break;
 		}
 	} else {
 		if (dice === 6 && player.pos < 30 && doubleSix !== 2) drawDoubleMessage(playerTurn); // draw double 6 text.
-		ctx.fillStyle = players[playerTurn].color;
 		if (playerTurn === 0) {
 			ctx.drawImage(p1, newX, newY, 35, 35);
 		} else {
 			ctx.drawImage(p2, newX, newY, 35, 35);
 		}
-		//ctx.fillRect(newX, newY, 35, 35);
 	}
 }
 
