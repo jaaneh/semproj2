@@ -105,7 +105,7 @@ function announceWinner(playerTurn) {
 
 	// Redirect to winners page
 	setTimeout(() => {
-		location.href = '/winner.html';
+		location.href = 'winner.html';
 	}, 1500);
 }
 
