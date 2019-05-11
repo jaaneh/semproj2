@@ -51,7 +51,7 @@ let posX = 0,
 	playerIcon,
 	otherPlayer = 0;
 
-path.onload = function() {
+trap.onload = function() {
 	checkCtx();
 };
 
