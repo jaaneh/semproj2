@@ -22,26 +22,26 @@ function fetchChars() {
 
 function addChars() {
 	for (let i = 0; i < characters.length; i++) {
-		const k = fetchedCharacters[i].url.split('/')[5];
+		const key = fetchedCharacters[i].url.split('/')[5];
 		const name = fetchedCharacters[i].name;
 		const firstName = name.split(' ')[0];
 		const titles = fetchedCharacters[i].titles;
 
 		charPick.innerHTML += `
 			<div class="col-xl-4 col-md-6 col-xs-12 character">
-				<div class="card character-card" id="${k}">
-					<div class="card-header character-card--header">${fetchedCharacters[i].name}</div>
-					<img src="images/characters/${k}.png" class="mx-auto card-img-top character-card--home-image" alt="...">
+				<div class="card character-card" id="${key}">
+					<div class="card-header character-card--header">${name}</div>
+					<img src="images/characters/${key}.png" class="mx-auto card-img-top character-card--home-image" alt="...">
 					<div class="card-body character-card--body">
-						<button type="button" class="btn character-card--body__read-button" data-readBtn="read-${k}">Read More</button>
-						<div class="card-body character-card--body__more hide" style="padding:0.75rem" data-info="${k}">
+						<button type="button" class="btn character-card--body__read-button" data-readBtn="read-${key}">Read More</button>
+						<div class="card-body character-card--body__more hide" style="padding:0.75rem" data-info="${key}">
 							<div>
 								<span class="character-card--body__more-title">Gender:</span> <span class="character-card--body__more-text">${fetchedCharacters[i].gender}</span>
 								<span class="character-card--body__more-title">Born:</span> <span class="character-card--body__more-text">${fetchedCharacters[i].born}</span>
 								<span class="character-card--body__more-title">Known as:</span> <span class="character-card--body__more-text">${titles.join(', ')}</span>
 							</div>
 						</div>
-						<button type="button" class="btn character-card--body__choose-button" id="pickBtn" data-charname="${fetchedCharacters[i].name}" data-charid="${k}">Choose ${firstName}</button>
+						<button type="button" class="btn character-card--body__choose-button" id="pickBtn" data-charname="${name}" data-charid="${key}">Choose ${firstName}</button>
 					</div>
 				</div>
 			</div>
